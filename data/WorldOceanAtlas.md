@@ -6,4 +6,6 @@ The World Ocean Atlas (WOA) is a collection of objectively analyzed, quality con
 
 A new version of the WOA is released in conjunction with each major update to the WOD
 
-Please see WORLD OCEAN ATLAS 2018 for more information
+Please See [WORLD OCEAN ATLAS 2018](https://www.ncei.noaa.gov/sites/default/files/2020-04/woa18_vol1.pdf) for more information about the datasets
+
+## Sample Code
