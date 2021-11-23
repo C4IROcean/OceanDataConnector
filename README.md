@@ -30,7 +30,7 @@ Data:
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/MarineRegions)
   * Example Notebook
 * **Estimated Ship Emissions**
- * [Source](https://www.gebco.net/)
- * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/datasetfolders/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
- * Example Notebook
+  * [Source](https://www.gebco.net/)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/datasetfolders/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
+  * Example Notebook
 
