@@ -16,7 +16,7 @@ Data:
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanAtlas.md)
-  * [Example Notebook] (https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanAtlas.ipynb)
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanAtlas.ipynb)
 * **Ocean Biodiversity Information System**
   * [Source](https://obis.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/OBIS)
