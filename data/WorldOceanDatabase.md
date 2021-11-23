@@ -36,7 +36,7 @@ UOR| Undulating Oceanographic Recorder data
 GLD| Glider data
 
 ## Sample Code
-
+[WOD Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanDatabase.ipynb)
 ### References:
 1.	Boyer, T.P., O.K. Baranova, C. Coleman, H. E., Garcia, A. Grodsky, R.A. Locarnini, A. V., Mishonov, C.R. Paver, J.R. Reagan, D. S. & I.V. Smolyar, K.W. Weathers,  and M. M. Z. World Ocean Atlas 2018, Volume 1: Temperature. Tech. Ed. NOAA Atlas NESDIS 87 (2018).
 2.	Boyer, T. P. et al. World Ocean Database 2018. NOAA Atlas NESDIS 87 (2018).
