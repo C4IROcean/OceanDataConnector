@@ -155,3 +155,9 @@ test-report.xml
 # tox
 .tox/
 .python-version
+data/World Ocean Database/.DS_Store
+data/World Ocean Atlas/.DS_Store
+data/OBIS/.DS_Store
+data/Marine Regions/.DS_Store
+data/GEBCO Bathymetry/.DS_Store
+data/.DS_Store
