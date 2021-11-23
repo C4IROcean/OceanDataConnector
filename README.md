@@ -12,11 +12,11 @@ Data:
 * **World Ocean Database**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-database)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanDatabase.md)
-  * Example Notebook
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanDatabase.ipynb)
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanAtlas.md)
-  * Example Notebook
+  * [Example Notebook] (https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanAtlas.ipynb)
 * **Ocean Biodiversity Information System**
   * [Source](https://obis.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/OBIS)
@@ -28,7 +28,7 @@ Data:
 * **Marine Regions**
   * [Source](https://www.marineregions.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/MarineRegions)
-  * Example Notebook
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/MarineRegions.ipynb)
 * **Estimated Ship Emissions**
   * [Source](https://www.c4irocean.earth/c4ir-ocean-projects/ship-emissions-tracking)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/EstimatedShipEmissions)
