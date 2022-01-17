@@ -12,7 +12,8 @@ Data:
 * **World Ocean Database**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-database)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanDatabase.md)
-  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanDatabase.ipynb)
+  * [Example Notebook using functions](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_functions.ipynb)
+  * [Example Notebook using user interface (UI)](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_selector.ipynb)
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanAtlas.md)
