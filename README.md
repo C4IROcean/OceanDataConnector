@@ -1,11 +1,11 @@
 # Ocean Data Connector
 
-The Ocean Data Connector is. JupyterHub environment powered by Dask for parallel computing.
+The Ocean Data Connector is a JupyterHub environment powered by Dask for parallel computing.
 You can directly pull data into the Ocean Data Connector from our geospatial database and perform analysis using the computing power provided.
 
 Getting Started:
 Below are the datasets currently in the Ocean Data Platform. You can view example notebooks for each dataset. 
-If you would like to run the notebooks, please visit () and log into the Ocean Data Connector.
+If you would like to run the notebooks, please visit the [ODC](https://dask.prod.oceandata.xyz/) and log in.
 The environment is already configured with all the necessary packages. All you have to do is pull the desired data and analyse away!
 
 Data:
