@@ -1,6 +1,6 @@
 # Ocean Data Connector
 
-![alt text](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/OceanDataConnectorLogoDark.png "ODC Logo")
+![image.png](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/OceanDataConnectorLogoDark.png "ODC Logo")
 
 
 The Ocean Data Connector is a JupyterHub environment powered by Dask for parallel computing.
@@ -43,5 +43,5 @@ Data:
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/VesselEmssions.ipynb)
 
 
-![alt text](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/ODCBenefits.png "ODC Benefits")
+![image.png](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/ODCBenefits.png "ODC Benefits")
 
