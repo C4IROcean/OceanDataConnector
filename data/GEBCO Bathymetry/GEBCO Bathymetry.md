@@ -9,4 +9,5 @@ Over the years it has become a reference map of the bathymetry of the world’s 
 
 For more information visit https://www.gebco.net/
 
-## [Sample Code:](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.ipynb)
+## Sample Code:
+[Vessel Emissions Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.ipynb)
