@@ -20,21 +20,25 @@ Data:
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanAtlas.md)
-  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/WorldOceanAtlas.ipynb)
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Atlas/WorldOceanAtlas.ipynb)
 * **Ocean Biodiversity Information System**
   * [Source](https://obis.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/OBIS)
-  * Example Notebook
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/OBIS/OBIS.ipynb)
 * **World Register of Marine Organisms**
   * [Source](https://www.marinespecies.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WoRMS)
-  * Example Notebook
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Worms/WoRMS.ipynb)
 * **Marine Regions**
   * [Source](https://www.marineregions.org/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/MarineRegions)
-  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/main/SDK/ExampleNotebooks/MarineRegions.ipynb)
-* **Estimated Ship Emissions**
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Marine%20Regions/MarineRegions.ipynb)
+* **GEBCO**
   * [Source](https://www.gebco.net/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/datasetfolders/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
-  * Example Notebook
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.ipynb)
+* **Global Vessel Emissions**
+  * [Source](https://www.c4irocean.earth/c4ir-ocean-projects/ship-emissions-tracking)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/GlobalVesselEmissons.md)
+  * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/VesselEmssions.ipynb)
 
