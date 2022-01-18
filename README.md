@@ -1,5 +1,8 @@
 # Ocean Data Connector
 
+![alt text](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/OceanDataConnectorLogo.png "ODC Logo")
+
+
 The Ocean Data Connector is a JupyterHub environment powered by Dask for parallel computing.
 You can directly pull data into the Ocean Data Connector from our geospatial database and perform analysis using the computing power provided.
 
