@@ -42,3 +42,6 @@ Data:
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/GlobalVesselEmissons.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/VesselEmssions.ipynb)
 
+
+![alt text](https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/ODCBenefits.png "ODC Benefits")
+
