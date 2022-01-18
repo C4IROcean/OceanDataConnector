@@ -14,28 +14,28 @@ The environment is already configured with all the necessary packages. All you h
 Data:
 * **World Ocean Database**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-database)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanDatabase.md)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase.md)
   * [Example Notebook using functions](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_functions.ipynb)
   * [Example Notebook using user interface (UI)](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_selector.ipynb)
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WorldOceanAtlas.md)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Atlas/WorldOceanAtlas.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Atlas/WorldOceanAtlas.ipynb)
 * **Ocean Biodiversity Information System**
   * [Source](https://obis.org/)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/OBIS)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/OBIS/OBIS.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/OBIS/OBIS.ipynb)
 * **World Register of Marine Organisms**
   * [Source](https://www.marinespecies.org/)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/WoRMS)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Worms/WoRMS.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Worms/WoRMS.ipynb)
 * **Marine Regions**
   * [Source](https://www.marineregions.org/)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/main/data/MarineRegions)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Marine%20Regions/MarineRegions.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Marine%20Regions/MarineRegions.ipynb)
 * **GEBCO**
   * [Source](https://www.gebco.net/)
-  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/datasetfolders/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
   * [Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.ipynb)
 * **Global Vessel Emissions**
   * [Source](https://www.c4irocean.earth/c4ir-ocean-projects/ship-emissions-tracking)
