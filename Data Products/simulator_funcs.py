@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 from os import environ, getenv, path
 from typing import TypedDict, Dict, Union, List
 import os
-os.chdir('/Users/johanne.skogvang/Projects.tmp/ODP_2022/app-vessel-simulator')
 from odp_vessel_simulator.app.vessel_emissions_simulation.emissions_from_routing import simulate
 #from app.vessel_emissions_simulation.app import load_ship
 
