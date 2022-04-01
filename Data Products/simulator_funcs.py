@@ -6,11 +6,14 @@ from sqlalchemy import create_engine
 from os import environ, getenv, path
 from typing import TypedDict, Dict, Union, List
 
+import sys
+sys.path.append('/home/jovyan/odp-python-sdk')
 
 from odp.database_functions.lookup_ship_data import fetch_ship_data
 from odp.database_functions.database import get_connection_pool
 from odp.database_functions.database import get_engine
 from odp.database_functions.ais_from_db import get_vessel_type
+
 
 def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_particulars, table_routing, dist_port=None, dist_shore=1000, ddeg=0.22, FINE_ROUTING=0, resolution_minutes=60, cost_density=0.3):
 
@@ -210,8 +213,10 @@ def plot_df(df_points: pd.DataFrame, col:float="speed_knots", norm:int=25):
 
 def get_routing_and_emissions(mmsi, coords, dist_port, dist_shore, routing_speed=None, draught=None, graph=None, time_resolution=60, detailed_routing=0, cost_density=0.3):
     tcp = get_connection_pool()
+    #engine = get_engine()
 
     vessel_particulars = fetch_ship_data(tcp, mmsi)
+    #vessel_particulars = fetch_ship_data(engine, mmsi)
     
     if routing_speed == None:
         routing_speed = float(vessel_particulars["max_speed"][1])
@@ -245,6 +250,10 @@ def get_routing_and_emissions(mmsi, coords, dist_port, dist_shore, routing_speed
     df = simulate(mmsi, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, 
               vessel_particulars, table_routing, dist_port, dist_shore, ddeg=10, FINE_ROUTING=detailed_routing, 
               resolution_minutes=time_resolution, cost_density=cost_density)
+    #df = simulate(mmsi, lon0, lat0, lon1, lat1, engine, routing_speed, draught, 
+    #          vessel_particulars, table_routing, dist_port, dist_shore, ddeg=10, FINE_ROUTING=detailed_routing, 
+    #          resolution_minutes=time_resolution, cost_density=cost_density)
+    
     
     #If there are more than two points we need to append that route here
     for i in range(1,(len(coords)-1)):
