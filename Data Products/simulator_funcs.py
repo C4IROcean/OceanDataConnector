@@ -11,8 +11,10 @@ sys.path.append('/home/jovyan/odp-python-sdk')
 
 from odp.database_functions.lookup_ship_data import fetch_ship_data
 from odp.database_functions.database import get_connection_pool
+#from odp.database_functions.db_config import tcp
 from odp.database_functions.database import get_engine
-from odp.database_functions.ais_from_db import get_vessel_type
+from odp.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
+from odp.icct_model.classes.ship import Ship
 
 
 def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_particulars, table_routing, dist_port=None, dist_shore=1000, ddeg=0.22, FINE_ROUTING=0, resolution_minutes=60, cost_density=0.3):
@@ -159,9 +161,12 @@ def load_ship(mmsi: int):  # ,engine):
 
 
 def get_routing_table_from_mmsi(mmsi: int) -> str:
-    engine = get_engine()
+    #engine = get_engine()
+    tcp = get_connection_pool()
+    engine = tcp.getconn()
+    
     vessel_type = get_vessel_type(mmsi, engine)
-    engine.dispose()
+    #engine.dispose()
     if vessel_type in ["fishing", "trawlers"]:
         vessel_type_routing = "fishing"
     elif vessel_type not in ["passenger", "cargo", "tanker", "tug"]:
@@ -237,7 +242,7 @@ def get_routing_and_emissions(mmsi, coords, dist_port, dist_shore, routing_speed
 
         
     #find the right table to pull from database:
-    table_routing_base = "ais_gfw_heatmap_h4_{}_crosslines"
+    table_routing_base = "vessel_emissions.ais_gfw_heatmap_h4_{}_crosslines"
     table_routing = table_routing_base.format(graph)
 
 
