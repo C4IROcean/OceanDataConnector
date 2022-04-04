@@ -2,22 +2,52 @@ import typing
 import pandas as pd
 import numpy as np
 import pydeck as pdk
+import geopandas as gpd
 from sqlalchemy import create_engine
 from os import environ, getenv, path
 from typing import TypedDict, Dict, Union, List
-
+from geopy.distance import great_circle
+from shapely.ops import nearest_points
 import sys
 sys.path.append('/home/jovyan/odp-python-sdk')
 
-from odp.database_functions.lookup_ship_data import fetch_ship_data
-from odp.database_functions.database import get_connection_pool
+#from odp.database_functions.lookup_ship_data import fetch_ship_data
+#from odp.database_functions.database import get_connection_pool
 #from odp.database_functions.db_config import tcp
-from odp.database_functions.database import get_engine
-from odp.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
-from odp.icct_model.classes.ship import Ship
+#from odp.database_functions.database import get_engine
+#from odp.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
+#from odp.icct_model.classes.ship import Ship
+
+from odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
+from odp_vessel_simulator.models.icct.database_functions.database import get_connection_pool
+from odp_vessel_simulator.models.icct.database_functions.database import get_engine
+from odp_vessel_simulator.models.icct.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
+from odp_vessel_simulator.models.icct.classes.ship import Ship
+from odp_vessel_simulator.models.icct.classes.pollutants import Pollutant
 
 
-def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_particulars, table_routing, dist_port=None, dist_shore=1000, ddeg=0.22, FINE_ROUTING=0, resolution_minutes=60, cost_density=0.3):
+
+
+def distance_from_shore(df):
+    df = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.lon, df.lat))
+    land = gpd.read_file('/home/jovyan/odp-python-sdk/odp_vessel_simulator/models/icct/data/geometry_data/land')
+    island =  gpd.read_file('/home/jovyan/odp-python-sdk/odp_vessel_simulator/models/icct/data/geometry_data/minor_islands')
+    world = gpd.GeoDataFrame( pd.concat( [land, island], ignore_index=True) )
+    polys=world['geometry']
+    df['min_poly']= df['geometry'].apply(lambda x: min(polys,key=x.distance))
+    df['p1']= df.apply(lambda x: nearest_points(x.min_poly, x.geometry)[0], axis=1)
+    df['distance_from_shore_m'] = df.apply(lambda x: great_circle((x.geometry.y,x.geometry.x),( x.p1.y, x.p1.x)).meters, axis=1)
+    return df.drop(['p1','min_poly'], axis=1)
+
+
+def distance_from_port(cur_pos, start_port, end_port):
+        #for now, just finding the great circle distance, not taking ant land into account. 
+        #Distance to port is only relevant when you are very close to the port, and then it's not that 
+        #relevant to account for land
+        return min(great_circle(cur_pos, start_port).km*1000, great_circle(cur_pos, end_port).km*1000)
+
+    
+def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_particulars, table_routing, dist_port=None, dist_shore=None, ddeg=0.22, FINE_ROUTING=0, resolution_minutes=60, cost_density=0.3):
 
     #lat0,lon0=(40.90715372, 28.96848188)
     #lat1,lon1=(1.26332241, 103.75604561)
@@ -111,10 +141,17 @@ def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_
     if dist_port == None:
         df['distance_from_port_m'] = df.apply(lambda row: distance_from_port((row['lat'],row['lon']), (lat0,lon0), (lat1,lon1)), axis=1)
     else:
-        df['distance_from_port_m'] = 1000
+        df['distance_from_port_m'] = dist_port
         print(f'Distance from port set to {dist_port}!!')
-    df['distance_from_shore_m'] = dist_shore
-    print(f'Distance from shore set to {dist_shore}!!')
+    
+    if dist_shore == None:
+        df = distance_from_shore(df)
+    else:
+        df['distance_from_shore_m'] = dist_shore
+        print(f'Distance from shore set to {dist_shore}!!')
+    
+    
+    
     df['draught_recent_m'] = draught
 
     ship = Ship(vessel_particulars)
