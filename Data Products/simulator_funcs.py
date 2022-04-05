@@ -11,12 +11,6 @@ from shapely.ops import nearest_points
 import sys
 sys.path.append('/home/jovyan/odp-python-sdk')
 
-#from odp.database_functions.lookup_ship_data import fetch_ship_data
-#from odp.database_functions.database import get_connection_pool
-#from odp.database_functions.db_config import tcp
-#from odp.database_functions.database import get_engine
-#from odp.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
-#from odp.icct_model.classes.ship import Ship
 
 from odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
 from odp_vessel_simulator.models.icct.database_functions.database import get_connection_pool
@@ -49,8 +43,6 @@ def distance_from_port(cur_pos, start_port, end_port):
     
 def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_particulars, table_routing, dist_port=None, dist_shore=None, ddeg=0.22, FINE_ROUTING=0, resolution_minutes=60, cost_density=0.3):
 
-    #lat0,lon0=(40.90715372, 28.96848188)
-    #lat1,lon1=(1.26332241, 103.75604561)
 
     engine = tcp.getconn()
 
@@ -110,11 +102,8 @@ def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_
         raise Exception(
             'No route found for given coordinates and routing graph')
 
-    # v = df_path.length_m.sum(
-    # )/(df_path.index[0]-df_path.index[i-1]).total_seconds()*1.94384449  # m/s to knots
+
     df_path['total_length_m'] = df_path.length_m.cumsum()
-    # df_path['timestamp'] = df_path.total_length_m.apply(
-    # lambda x: df.index[i-1]+pd.Timedelta(x/v, unit='seconds'))
     df_path['vessel_spd'][df_path['vessel_spd'] < 5] = 5
     df_path['time_s'] = df_path['length_m']/(df_path['vessel_spd']/1.94384449)
     df_path['duration_s'] = df_path.time_s.cumsum()
@@ -131,8 +120,6 @@ def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_
     df = df_path.loc[:, ['ssvid', 'lon', 'lat', 'speed_knots', 'implied_speed_knots',
                          'interpolated']].resample(f'{resolution_minutes}min').mean()  # .iloc[1:-1]
     df.dropna(inplace=True)
-
-    #df_path = pd.concat(paths)
 
     _df = check_in_regions(df, engine)
     df['in_a_eca'] = _df['in_a_eca'].values*1
@@ -175,7 +162,7 @@ def simulate(ssvid, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, vessel_
     return df_emissions[labels]
 
 
-def load_ship(mmsi: int):  # ,engine):
+def load_ship(mmsi: int):
 
     sql = f"""
     select "LRIMOShipNo" as imo,
@@ -198,12 +185,10 @@ def load_ship(mmsi: int):  # ,engine):
 
 
 def get_routing_table_from_mmsi(mmsi: int) -> str:
-    #engine = get_engine()
     tcp = get_connection_pool()
     engine = tcp.getconn()
     
     vessel_type = get_vessel_type(mmsi, engine)
-    #engine.dispose()
     if vessel_type in ["fishing", "trawlers"]:
         vessel_type_routing = "fishing"
     elif vessel_type not in ["passenger", "cargo", "tanker", "tug"]:
@@ -255,11 +240,9 @@ def plot_df(df_points: pd.DataFrame, col:float="speed_knots", norm:int=25):
 
 def get_routing_and_emissions(mmsi, coords, dist_port, dist_shore, routing_speed=None, draught=None, graph=None, time_resolution=60, detailed_routing=0, cost_density=0.3):
     tcp = get_connection_pool()
-    #engine = get_engine()
 
     vessel_particulars = fetch_ship_data(tcp, mmsi)
-    #vessel_particulars = fetch_ship_data(engine, mmsi)
-    
+
     if routing_speed == None:
         routing_speed = float(vessel_particulars["max_speed"][1])
         if routing_speed == 0.0 or type(routing_speed)!=float :
@@ -292,9 +275,6 @@ def get_routing_and_emissions(mmsi, coords, dist_port, dist_shore, routing_speed
     df = simulate(mmsi, lon0, lat0, lon1, lat1, tcp, routing_speed, draught, 
               vessel_particulars, table_routing, dist_port, dist_shore, ddeg=10, FINE_ROUTING=detailed_routing, 
               resolution_minutes=time_resolution, cost_density=cost_density)
-    #df = simulate(mmsi, lon0, lat0, lon1, lat1, engine, routing_speed, draught, 
-    #          vessel_particulars, table_routing, dist_port, dist_shore, ddeg=10, FINE_ROUTING=detailed_routing, 
-    #          resolution_minutes=time_resolution, cost_density=cost_density)
     
     
     #If there are more than two points we need to append that route here
