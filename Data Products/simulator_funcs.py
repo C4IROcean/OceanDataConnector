@@ -9,7 +9,6 @@ from typing import TypedDict, Dict, Union, List
 from geopy.distance import great_circle
 from shapely.ops import nearest_points
 import sys
-sys.path.append('/home/jovyan/odp-python-sdk')
 
 
 from odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
@@ -18,14 +17,14 @@ from odp_vessel_simulator.models.icct.database_functions.database import get_eng
 from odp_vessel_simulator.models.icct.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
 from odp_vessel_simulator.models.icct.classes.ship import Ship
 from odp_vessel_simulator.models.icct.classes.pollutants import Pollutant
-
-
+import odp_vessel_simulator
+SDK_DIR = path.dirname(odp_vessel_simulator.__file__)
 
 
 def distance_from_shore(df):
     df = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.lon, df.lat))
-    land = gpd.read_file('/home/jovyan/odp-python-sdk/odp_vessel_simulator/models/icct/data/geometry_data/land')
-    island =  gpd.read_file('/home/jovyan/odp-python-sdk/odp_vessel_simulator/models/icct/data/geometry_data/minor_islands')
+    land = gpd.read_file(path.join(SDK_DIR, 'models/icct/data/geometry_data/land'))
+    island =  gpd.read_file(path.join(SDK_DIR, 'models/icct/data/geometry_data/minor_islands'))
     world = gpd.GeoDataFrame( pd.concat( [land, island], ignore_index=True) )
     polys=world['geometry']
     df['min_poly']= df['geometry'].apply(lambda x: min(polys,key=x.distance))
