@@ -11,13 +11,13 @@ from shapely.ops import nearest_points
 import sys
 
 
-from odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
-from odp_vessel_simulator.models.icct.database_functions.database import get_connection_pool
-from odp_vessel_simulator.models.icct.database_functions.database import get_engine
-from odp_vessel_simulator.models.icct.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
-from odp_vessel_simulator.models.icct.classes.ship import Ship
-from odp_vessel_simulator.models.icct.classes.pollutants import Pollutant
-import odp_vessel_simulator
+from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
+from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.database import get_connection_pool
+from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.database import get_engine
+from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.ais_from_db import get_vessel_type, get_closest_node_from_coord, get_best_path, check_in_regions
+from odp.geospatial.odp_vessel_simulator.models.icct.classes.ship import Ship
+from odp.geospatial.odp_vessel_simulator.models.icct.classes.pollutants import Pollutant
+import odp.geospatial.odp_vessel_simulator as odp_vessel_simulator
 SDK_DIR = path.dirname(odp_vessel_simulator.__file__)
 
 
