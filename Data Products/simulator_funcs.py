@@ -6,9 +6,10 @@ import geopandas as gpd
 from sqlalchemy import create_engine
 from os import environ, getenv, path
 from typing import TypedDict, Dict, Union, List
-import os
-from odp_vessel_simulator.app.vessel_emissions_simulation.emissions_from_routing import simulate
-#from app.vessel_emissions_simulation.app import load_ship
+from geopy.distance import great_circle
+from shapely.ops import nearest_points
+import sys
+
 
 from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.lookup_ship_data import fetch_ship_data
 from odp.geospatial.odp_vessel_simulator.models.icct.database_functions.database import get_connection_pool
