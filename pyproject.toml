@@ -6,8 +6,8 @@ authors = ["Tara Zeynep Baris <tara.baris@oceandata.earth>"]
 license = "mit"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pandas = "^1.4.2"
+python = ">=3.8,<3.11"
+pandas = "1.4.0"
 numpy = "^1.22.3"
 pydeck = "^0.7.1"
 geopandas = "^0.10.2"
@@ -21,12 +21,19 @@ azure-storage-blob = "^12.11.0"
 altair = "^4.2.0"
 hvplot = "^0.7.3"
 zarr = "^2.11.3"
-pyproj = "^3.3.1"
+pyshp = "^2.2.0"
+odp = {git = "https://oceandatafoundation@dev.azure.com/oceandatafoundation/ODP/_git/odp-python-sdk"}
+ipyleaflet = "^0.16.0"
 Cartopy = "0.18.0"
+psycopg2-binary = "^2.9.3"
+scipy = "1.8.0"
 
 [tool.poetry.dev-dependencies]
 nox = "^2022.1.7"
 papermill = "^2.3.4"
+nox-poetry = "^0.9.0"
+pytest = "^7.1.2"
+python-dotenv = "^0.20.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
