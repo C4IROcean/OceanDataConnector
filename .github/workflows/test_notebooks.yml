@@ -20,4 +20,4 @@ jobs:
       - name: Build the Docker image
         run: docker build . --tag local
       - name: Run tests
-        run: docker run -it local
+        run: docker run local
