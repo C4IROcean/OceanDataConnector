@@ -19,6 +19,10 @@ NOTEBOOK_DIRS = [
 NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS = 60
 CWD = os.getcwd()
 
+#
+# Set up NOX environment
+#
+
 load_dotenv()
 
 def get_notebook_files() -> Iterable[str]:
@@ -31,11 +35,13 @@ def get_notebook_files() -> Iterable[str]:
 
 notebook_files = list(get_notebook_files())
 
+#
+# Define NOX sessions
+#
 
-@session(python=PYTHON_VERSIONS)
-def install_deps(session: Session):
-    # session.run("poetry", "install")
-    session.install("-r", "requirements.txt")
+# @session(python=PYTHON_VERSIONS)
+# def install_deps(session: Session):
+#     session.install("-r", "requirements.txt")
 
 
 @session(python=PYTHON_VERSIONS, reuse_venv=True)
@@ -44,12 +50,13 @@ def test_notebook(session: Session, notebook_file: str):
     with tempfile.TemporaryDirectory() as tdir:
 
         session.run(
-                "poetry", "run", "papermill", "--log-level", "DEBUG", "--execution-timeout", str(NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS), notebook_file, os.path.join(tdir, "output.ipynb"),
-                # "poetry", "run", "papermill", notebook_file, os.path.join(tdir, "output.ipynb"),
+                # "poetry", "run", "papermill", "--log-level", "INFO", "--execution-timeout", str(NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS),
+                "poetry", "run", "papermill", "--log-level", "INFO",
+                "--cwd", os.path.dirname(notebook_file),
+                notebook_file, os.path.join(tdir, "output.ipynb"),
                 env = {
                         "DATABASE_URL": os.environ["DATABASE_URL"],
                         "ODE_CONNECTION_STR": os.environ["ODE_CONNECTION_STR"],
                         "ODE_MAPBOX_API_TOKEN": os.environ["ODE_MAPBOX_API_TOKEN"],
-                        "PYTHONPATH": os.path.basename(notebook_file)
                     }
                 )
