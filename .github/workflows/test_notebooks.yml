@@ -18,6 +18,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag local
+        run: docker build --tag local < .devcontainer/Dockerfile
       - name: Run tests
         run: docker run -it local
