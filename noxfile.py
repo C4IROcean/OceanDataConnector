@@ -10,11 +10,7 @@ from dotenv import load_dotenv
 
 PYTHON_VERSIONS = ["3.9"]
 
-NOTEBOOK_DIRS = [
-    "data",
-    "Data Products",
-    "SDK"
-        ]
+NOTEBOOK_DIRS = ["data", "Data Products", "SDK"]
 
 NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS = 60
 CWD = os.getcwd()
@@ -24,6 +20,7 @@ CWD = os.getcwd()
 #
 
 load_dotenv()
+
 
 def get_notebook_files() -> Iterable[str]:
     for dir in NOTEBOOK_DIRS:
@@ -50,13 +47,19 @@ def test_notebook(session: Session, notebook_file: str):
     with tempfile.TemporaryDirectory() as tdir:
 
         session.run(
-                # "poetry", "run", "papermill", "--log-level", "INFO", "--execution-timeout", str(NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS),
-                "poetry", "run", "papermill", "--log-level", "INFO",
-                "--cwd", os.path.dirname(notebook_file),
-                notebook_file, os.path.join(tdir, "output.ipynb"),
-                env = {
-                        "DATABASE_URL": os.environ["DATABASE_URL"],
-                        "ODE_CONNECTION_STR": os.environ["ODE_CONNECTION_STR"],
-                        "ODE_MAPBOX_API_TOKEN": os.environ["ODE_MAPBOX_API_TOKEN"],
-                    }
-                )
+            # "poetry", "run", "papermill", "--log-level", "INFO", "--execution-timeout", str(NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS),
+            "poetry",
+            "run",
+            "papermill",
+            "--log-level",
+            "INFO",
+            "--cwd",
+            os.path.dirname(notebook_file),
+            notebook_file,
+            os.path.join(tdir, "output.ipynb"),
+            env={
+                "DATABASE_URL": os.environ["DATABASE_URL"],
+                "ODE_CONNECTION_STR": os.environ["ODE_CONNECTION_STR"],
+                "ODE_MAPBOX_API_TOKEN": os.environ["ODE_MAPBOX_API_TOKEN"],
+            },
+        )
