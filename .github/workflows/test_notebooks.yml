@@ -21,6 +21,7 @@ jobs:
         run: docker build . --tag local:latest
   run_tests:
     runs-on: ubuntu-latest
+    needs: build
     container:
       image: local:latest
     steps:
