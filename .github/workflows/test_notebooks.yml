@@ -18,6 +18,13 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - name: Build the Docker image
-        run: docker build . --tag local
+        run: docker build . --tag local:latest
+  run_tests:
+    runs-on: ubuntu-latest
+    container:
+      image: local:latest
+    steps:
       - name: Run tests
-        run: docker run local
+        run: nox
+        env:
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
