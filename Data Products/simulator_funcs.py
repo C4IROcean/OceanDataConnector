@@ -8,6 +8,7 @@ from os import environ, getenv, path
 from typing import TypedDict, Dict, Union, List
 from geopy.distance import great_circle
 from shapely.ops import nearest_points
+from shapely.geometry import LineString
 import sys
 
 
@@ -338,3 +339,112 @@ def emissions_multiple_vessels(coordinates, df_input,dist_port, dist_shore, time
     df_emissions = df_emissions.sort_values(by="emissions_CO2", ascending=True)
     
     return df_emissions, list_of_df, list_of_paths
+
+
+def get_and_set_lon_lat_ports(_ports, list_of_unknown_ports=None):
+    #ports is a list of ports on the format ['port1','port2']
+    #list_of_unknown_ports is on the format [[port_name1,latitude1,longitude1][port_name2,latitude2,longitude2]]
+    
+    ports = [port.upper() for port in _ports]
+    
+    ports_string = '|'.join(ports)
+    
+    df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
+    df_ports = df_all_ports[df_all_ports['port_name'].str.contains(ports_string)][['port_name','latitude','longitude']].reset_index(drop=True)
+    
+    if list_of_unknown_ports:
+        list_of_unknown_ports = [[p[0].upper(),p[1],p[2]] for p in list_of_unknown_ports]
+        df_temp = pd.DataFrame(data=list_of_unknown_ports, columns = ['port_name','latitude','longitude'])
+        df_ports = pd.concat([df_ports,df_temp], ignore_index=True)
+    
+    for port in ports:
+        if not df_ports['port_name'].astype(str).str.contains(port).any():
+            print(f'{port} is not in our database. Add it manually by adding a list of unknown ports as argument to this function on the format [[port_name1,latitude1,longitude1],[port_name2,latitude2,longitude2]]'.format(port))
+
+    return df_ports
+
+
+def get_lon_lat_ports_old(_ports):
+    #ports is a list of ports on the format ['port1','port2']
+    
+    ports = [port.upper() for port in _ports]
+    
+    ports_string = '|'.join(ports)
+    
+    df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
+    df_ports = df_all_ports[df_all_ports['port_name'].str.fullmatch(ports_string)][['port_name','country','longitude','latitude']].reset_index(drop=True)
+    
+    
+    for port in ports:
+        if not df_ports['port_name'].astype(str).str.fullmatch(port).any():
+            #Try and find the port using str.contains. Give options if there are more than one???
+            print(f'Could not find {port}, trying a broader search'.format(port))
+            df_broader = df_all_ports[df_all_ports['port_name'].str.contains(str(port))][['port_name','country','longitude','latitude']].reset_index(drop=True)
+            if len(df_broader)>0:
+                broader_port_list = list(df_broader['port_name'])
+                print(f'Found the ports {broader_port_list}'.format(broader_port_list))
+                num_ports = len(df_broader)
+                port_index = input(f'Is one of these the right port? Type in the index of the right port, that is a number between 1 and {num_ports}. Press N if all are wrong.'.format(num_ports))
+                if port_index == 'N' or port_index == 'n':
+                    print(' ')
+                    print(f'{port} is not in our database. Add its coordinates manually'.format(port))
+                else:
+                    port_index = int(port_index)-1
+                    df_ports = pd.concat([df_ports,df_broader.iloc[[port_index]]],axis=0).reset_index(drop=True)
+                    
+    coordinates = list(df_ports.apply(lambda row: [row['longitude'],row['latitude']],axis=1))
+
+    return df_ports, coordinates
+
+def get_lon_lat_ports(_ports):
+    #ports is a list of ports on the format ['port1','port2']
+    
+    ports = [port.upper() for port in _ports]
+    
+    ports_string = '|'.join(ports)
+    
+    df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
+    df_ports = df_all_ports[df_all_ports['port_name'].str.fullmatch(ports_string)][['port_name','country','longitude','latitude']].reset_index(drop=True)
+    
+    
+    for port in ports:
+        if not df_ports['port_name'].astype(str).str.fullmatch(port).any():
+            #Try and find the port using str.contains. Give options if there are more than one???
+            print(f'Could not find {port}, trying a broader search'.format(port))
+            df_broader = df_all_ports[df_all_ports['port_name'].str.contains(str(port))][['port_name','country','longitude','latitude']].reset_index(drop=True)
+            if len(df_broader)>0:
+                broader_port_list = list(df_broader['port_name'])
+                print(f'Found the ports {broader_port_list}'.format(broader_port_list))
+                
+                num_ports = len(df_broader)
+                possible_input = list(range(1,num_ports+1))
+                possible_input.append('N')
+                possible_input.append('n')
+                port_index = input(f'Is one of these the right port? Type in the index of the right port, that is a number between 1 and {num_ports}. Press N if all are wrong.'.format(num_ports))
+                if port_index != 'n' and port_index != 'N':
+                    port_index = int(port_index)
+                while port_index not in possible_input:
+                    port_index = input(f'Wrong input, choose between {possible_input}.'.format(possible_input))
+                    if port_index != 'n' and port_index != 'N':
+                        port_index = int(port_index)
+                if port_index == 'N' or port_index == 'n':
+                    print(' ')
+                    print(f'{port} is not in our database. Add its coordinates manually. \n'.format(port))
+                    print(' ')
+                    ports.remove(port)
+                else:
+                    port_index = int(port_index)-1
+                    df_ports = pd.concat([df_ports,df_broader.iloc[[port_index]]],axis=0)
+                    ports[ports.index(port)] = df_broader['port_name'][port_index]
+            else: 
+                print(' ')
+                print(f'{port} is not in our database. Add its coordinates manually'.format(port))
+                ports.remove(port)
+                #fix this, so taht not duplicated code!
+                
+    df_ports.set_index('port_name',inplace=True)
+    df_ports=df_ports.loc[ports].reset_index(drop=False)
+    
+    coordinates = list(df_ports.apply(lambda row: [row['longitude'],row['latitude']],axis=1))
+    
+    return df_ports, coordinates
