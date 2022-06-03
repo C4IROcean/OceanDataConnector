@@ -138,10 +138,8 @@ def plot_df(point=None, ports=None, col='speed_knots', norm=20,
                  initial_view_state=view,
                  tooltip=tooltip,
                  map_provider='mapbox',
-                 #map_style='mapbox://styles/mapbox/light-v9',
-                 api_keys={'mapbox':'pk.eyJ1Ijoib2NlYW5kYXRhZm91bmRhdGlvbiIsImEiOiJjazk5bGxpNWkwYWU1M2Vya3hkcHh4czdrIn0.yf7kIiPfDNE7KP9_9wTN6A'},
-                 # map_style='mapbox://styles/mapbox/light-v9',
-                 map_style='mapbox://styles/oceandatafoundation/ckbujyuqu0kah1kpbctq4lemg')
+                 map_style='light'
+                 )
 
     return r
 
@@ -170,7 +168,7 @@ def get_lon_lat_ports(_ports):
     ports_string = '|'.join(ports)
     
     #df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
-    df_all_ports=pd.read_csv(get_files_from_blob('csv/world_port_index/')[0], storage_options={"connection_string": os.environ['ODE_CONNECTION_STR']})
+    df_all_ports=pd.read_csv(get_files_from_blob('csv/world_port_index/')[0], storage_options={"connection_string": os.environ['HACKATHON_DB_CONNECTION']})
     
     df_ports = df_all_ports[df_all_ports['Main Port Name'].str.fullmatch(ports_string)][['Main Port Name','Country Code','Latitude','Longitude']].reset_index(drop=True)
     
