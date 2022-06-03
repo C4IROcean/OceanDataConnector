@@ -9,7 +9,7 @@ The vessel emissions data provided by HUB Ocean and the Ocean Data Portal Consis
 - Hourly emissions data per vessel. Available in PostgreSQL database. See Tutorial 3.
 
 
-To access the datasets, connection strings need to be set for these two environmental variables:
+To access the datasets, connection strings need to be set for these two environmental variables below. Connection strings are distributed through the organizer.
 ```
 HACKATHON_DB_CONNECTION
 ```
@@ -17,6 +17,10 @@ HACKATHON_DB_CONNECTION
 HACKATHON_CONNECTION_STR
 ```
 This is not needed if running the notebooks in the Ocean Data Connector (The jupyter lab environment in the Ocean Data Platform).
+
+
+Install dependecies with
+```pip install -r requirements.txt```
 
 
 

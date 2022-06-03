@@ -44,12 +44,12 @@ def get_zarr_from_blob(folder,container='vessel-emissions-2020'):
 def get_engine():
     return create_engine((os.environ['HACKATHON_DB_CONNECTION']))
 
-def load_data(mmsi, table = 'ais_emissions'):  # ,engine):
+def load_data(mmsi):  # ,engine):
 
-    sql = f'''select timestamp,lon,lat, speed_knots,"emissions_CO2", "emissions_CO", "emissions_SOX",
-           "emissions_N2O", "emissions_NOX", "emissions_PM", "emissions_CH4",interpolated,current_phase
-           from {table} where ssvid={mmsi} order by timestamp'''
-    engine = get_engine(db_pswd)
+    sql = f'''select *
+           from get_emissions_from_vessel({mmsi}) 
+           order by timestamp'''
+    engine = get_engine()
     df = pd.read_sql(sql, engine)
     engine.dispose()
     df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -62,14 +62,13 @@ def load_data(mmsi, table = 'ais_emissions'):  # ,engine):
     # 'emissions_N2O', 'emissions_NOX', 'emissions_PM', 'emissions_CH4']]
     df.sort_index(inplace=True)
 
-    df['interpolated'][df['interpolated'] == 0] = 'No (reported postion)'
-    df['interpolated'][df['interpolated'] == 1] = 'Linear (small gap)'
-    df['interpolated'][df['interpolated'] == 2] = 'Routed (large gap)'
+    #df['interpolated'][df['interpolated'] == 0] = 'No (reported postion)'
+    #df['interpolated'][df['interpolated'] == 1] = 'Linear (small gap)'
+    #df['interpolated'][df['interpolated'] == 2] = 'Routed (large gap)'
 
     return df
 
-def plot_df(point=None, ports=None, col='speed_knots', norm=20,
-            mapbox_api_key='pk.eyJ1Ijoib2NlYW5kYXRhZm91bmRhdGlvbiIsImEiOiJjazk5bGxpNWkwYWU1M2Vya3hkcHh4czdrIn0.yf7kIiPfDNE7KP9_9wTN6A'):
+def plot_df(point=None, ports=None, col='speed', norm=20):
     layers = []
 
     point_cloud_layer = pdk.Layer(
@@ -137,7 +136,6 @@ def plot_df(point=None, ports=None, col='speed_knots', norm=20,
     r = pdk.Deck(layers=layers[::-1],
                  initial_view_state=view,
                  tooltip=tooltip,
-                 map_provider='mapbox',
                  map_style='light'
                  )
 
@@ -168,7 +166,7 @@ def get_lon_lat_ports(_ports):
     ports_string = '|'.join(ports)
     
     #df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
-    df_all_ports=pd.read_csv(get_files_from_blob('csv/world_port_index/')[0], storage_options={"connection_string": os.environ['HACKATHON_DB_CONNECTION']})
+    df_all_ports=pd.read_csv(get_files_from_blob('csv/world_port_index/')[0], storage_options={"connection_string": os.environ['HACKATHON_CONNECTION_STR']})
     
     df_ports = df_all_ports[df_all_ports['Main Port Name'].str.fullmatch(ports_string)][['Main Port Name','Country Code','Latitude','Longitude']].reset_index(drop=True)
     
