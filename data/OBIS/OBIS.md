@@ -10,3 +10,4 @@ More than 20 OBIS nodes around the world connect 500 institutions from 56 countr
 For more information on OBIS please visit: https://obis.org/
 
 ## Sample Code:
+[OBIS Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/OBIS/OBIS.ipynb)

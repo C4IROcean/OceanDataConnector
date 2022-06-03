@@ -8,4 +8,5 @@ The geometry column in Marine Regions can be used as input for querying other da
 For more information please visit: https://www.marineregions.org/
 
 ## Sample Code:
+[Marine Regions Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/Marine%20Regions/MarineRegions.ipynb)
 
