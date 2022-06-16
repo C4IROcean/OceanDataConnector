@@ -34,5 +34,3 @@ oa| Statistical mean minus objectively analyzed climatology
 gp| Number of mean values within radius of influence
 
 
-## Sample Code:
-[WOA Example Notebook](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Atlas/WorldOceanAtlas.ipynb)
