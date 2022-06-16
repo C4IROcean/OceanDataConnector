@@ -1,5 +1,5 @@
 
-# Marine Regions
+# Lusedata
 
 ## Overview
 Data on lice counts of different lice types and treatments used in Norwegian aquaculture sites from 2012-present provided by Mattilsynet - Norwegian Food Safety Authority and distributed by Sjømat Norges and OPS Sjømat.
