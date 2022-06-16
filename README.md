@@ -3,7 +3,7 @@
 <!-- <img src="https://github.com/C4IROcean/OceanDataConnector/blob/master/figs/OceanDataConnectorLogoDark.png" alt="ODC Logo"/> -->
 
 
-The Ocean Data Connector is a JupyterHub environment powered by Dask for parallel computing.
+The [Ocean Data Connector](https://oceandata.earth/ocean-data-connector) is a JupyterHub environment powered by Dask for parallel computing.
 You can directly pull data into the Ocean Data Connector from our geospatial database and perform analysis using the computing power provided.
 
 Getting Started:
@@ -15,7 +15,6 @@ Data:
 * **World Ocean Database**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-database)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase.md)
-  * [Example Notebook using user interface (UI)](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_selector.ipynb)
 * **World Ocean Atlas**
   * [Source](https://www.ncei.noaa.gov/products/world-ocean-atlas)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Atlas/WorldOceanAtlas.md)
