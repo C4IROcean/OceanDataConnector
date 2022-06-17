@@ -35,6 +35,10 @@ DRB| Drifting buoy data
 UOR| Undulating Oceanographic Recorder data
 GLD| Glider data
 
+## Sample Code
+[WOD Example Notebook Functions](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_functions.ipynb)
+
+[WOD Example Notebook User Interface](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/World%20Ocean%20Database/WorldOceanDatabase_selector.ipynb)
 
 ### References:
 1.	Boyer, T.P., O.K. Baranova, C. Coleman, H. E., Garcia, A. Grodsky, R.A. Locarnini, A. V., Mishonov, C.R. Paver, J.R. Reagan, D. S. & I.V. Smolyar, K.W. Weathers,  and M. M. Z. World Ocean Atlas 2018, Volume 1: Temperature. Tech. Ed. NOAA Atlas NESDIS 87 (2018).
