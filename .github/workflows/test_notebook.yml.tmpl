@@ -38,13 +38,20 @@ jobs:
 
 {% for slug, session in sessions.items() %}
   run_tests_{{slug}}:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: {% raw %}${{ secrets.ACR_USERNAME }}{% endraw %}
+        password: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
 
     steps:
       - name: Run tests for {{slug}}
         run:
-          {% raw %}docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s {% endraw %} "{{session}}"
+          nox -s "{{session}}"
+        env:
+          ODE_CONNECTION_STR: {% raw %}${{ secrets.ODE_CONNECTION_STR }}{% endraw %}
+          ODE_MAPBOX_API_TOKEN: {% raw %}${{ secrets.ODE_MAPBOX_API_TOKEN }}{% endraw %}
+          DATABASE_URL: {% raw %}${{ secrets.ODC_DATABASE_URL }}{% endraw %}
 {% endfor %}

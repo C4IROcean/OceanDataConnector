@@ -36,245 +36,421 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-
   run_tests_obis-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for obis-ipynb
-        run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/OBIS/OBIS.ipynb)"
+        run: nox -s "test_notebook-3.9(notebook_file=/src/data/OBIS/OBIS.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_obis-checkpoint-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for obis-checkpoint-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/OBIS/.ipynb_checkpoints/OBIS-checkpoint.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/OBIS/.ipynb_checkpoints/OBIS-checkpoint.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_marineregions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for marineregions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/SDK/ExampleNotebooks/MarineRegions.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/SDK/ExampleNotebooks/MarineRegions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_marineregions-checkpoint-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for marineregions-checkpoint-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/Marine Regions/.ipynb_checkpoints/MarineRegions-checkpoint.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/Marine
+          Regions/.ipynb_checkpoints/MarineRegions-checkpoint.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_worms-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for worms-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/Worms/WoRMS.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/Worms/WoRMS.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_lusedata-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for lusedata-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/lusedata/Lusedata.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/lusedata/Lusedata.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_lusedata-checkpoint-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for lusedata-checkpoint-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/lusedata/.ipynb_checkpoints/Lusedata-checkpoint.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/lusedata/.ipynb_checkpoints/Lusedata-checkpoint.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_gebco-bathymetry-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for gebco-bathymetry-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/GEBCO Bathymetry/GEBCO Bathymetry.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/GEBCO
+          Bathymetry/GEBCO Bathymetry.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_tutorial-3-hourly-ship-emissions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for tutorial-3-hourly-ship-emissions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 3 - Hourly Ship Emissions.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 3
+          - Hourly Ship Emissions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_tutorial-4-green-corridor-emissions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for tutorial-4-green-corridor-emissions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 4 - Green Corridor Emissions.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 4
+          - Green Corridor Emissions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_tutorial-1-gridded-emissions-data-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for tutorial-1-gridded-emissions-data-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 1 - Gridded Emissions Data.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 1
+          - Gridded Emissions Data.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_tutorial-2-voyage-emissions-data-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for tutorial-2-voyage-emissions-data-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 2 - Voyage Emissions Data.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 2
+          - Voyage Emissions Data.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_worldoceandatabase-selector-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for worldoceandatabase-selector-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/WorldOceanDatabase_selector.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean
+          Database/WorldOceanDatabase_selector.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_worldoceandatabase-functions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for worldoceandatabase-functions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/WorldOceanDatabase_functions.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean
+          Database/WorldOceanDatabase_functions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_worldoceandatabase-selector-checkpoint-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for worldoceandatabase-selector-checkpoint-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/.ipynb_checkpoints/WorldOceanDatabase_selector-checkpoint.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean
+          Database/.ipynb_checkpoints/WorldOceanDatabase_selector-checkpoint.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_worldoceanatlas-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for worldoceanatlas-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/World Ocean Atlas/WorldOceanAtlas.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean
+          Atlas/WorldOceanAtlas.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_wids-crw-bleaching-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for wids-crw-bleaching-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/WiDS_CRW_bleaching.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef
+          Watch/WiDS/WiDS_CRW_bleaching.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_timeseries-classification-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for timeseries-classification-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/timeseries_classification.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef
+          Watch/WiDS/timeseries_classification.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_wids-classification-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for wids-classification-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/WiDS_classification.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef
+          Watch/WiDS/WiDS_classification.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_wids-crw-bleaching-checkpoint-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for wids-crw-bleaching-checkpoint-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/.ipynb_checkpoints/WiDS_CRW_bleaching-checkpoint.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef
+          Watch/WiDS/.ipynb_checkpoints/WiDS_CRW_bleaching-checkpoint.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_vesselemssions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for vesselemssions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/data/GlobalVesselEmissions/VesselEmssions.ipynb)"
+          nox -s
+          "test_notebook-3.9(notebook_file=/src/data/GlobalVesselEmissions/VesselEmssions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
   run_tests_simulator-comparing-emissions-ipynb:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
       - name: Run tests for simulator-comparing-emissions-ipynb
         run:
-          docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
-          "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -s  "test_notebook-3.9(notebook_file=/src/Data Products/Simulator, Comparing Emissions.ipynb)"
+          nox -s "test_notebook-3.9(notebook_file=/src/Data Products/Simulator,
+          Comparing Emissions.ipynb)"
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
