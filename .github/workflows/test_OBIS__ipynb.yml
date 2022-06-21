@@ -28,4 +28,4 @@ jobs:
         run:
           docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
           "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
-          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local
+          "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local -s  test_notebook-3.9(notebook_file=data/OBIS/OBIS.ipynb)
