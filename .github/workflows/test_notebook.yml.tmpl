@@ -47,6 +47,8 @@ jobs:
         password: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for {{slug}}
         run:
           nox -s "{{session}}" -f /src/noxfile.py

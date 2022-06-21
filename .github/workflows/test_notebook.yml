@@ -47,6 +47,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for obis-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/OBIS/OBIS.ipynb)" -f /src/noxfile.py
@@ -65,6 +67,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for obis-checkpoint-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/OBIS/.ipynb_checkpoints/OBIS-checkpoint.ipynb)" -f /src/noxfile.py
@@ -83,6 +87,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for marineregions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/SDK/ExampleNotebooks/MarineRegions.ipynb)" -f /src/noxfile.py
@@ -101,6 +107,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for marineregions-checkpoint-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/Marine Regions/.ipynb_checkpoints/MarineRegions-checkpoint.ipynb)" -f /src/noxfile.py
@@ -119,6 +127,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for worms-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/Worms/WoRMS.ipynb)" -f /src/noxfile.py
@@ -137,6 +147,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for lusedata-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/lusedata/Lusedata.ipynb)" -f /src/noxfile.py
@@ -155,6 +167,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for lusedata-checkpoint-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/lusedata/.ipynb_checkpoints/Lusedata-checkpoint.ipynb)" -f /src/noxfile.py
@@ -173,6 +187,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for gebco-bathymetry-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/GEBCO Bathymetry/GEBCO Bathymetry.ipynb)" -f /src/noxfile.py
@@ -191,6 +207,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for tutorial-3-hourly-ship-emissions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 3 - Hourly Ship Emissions.ipynb)" -f /src/noxfile.py
@@ -209,6 +227,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for tutorial-4-green-corridor-emissions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 4 - Green Corridor Emissions.ipynb)" -f /src/noxfile.py
@@ -227,6 +247,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for tutorial-1-gridded-emissions-data-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 1 - Gridded Emissions Data.ipynb)" -f /src/noxfile.py
@@ -245,6 +267,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for tutorial-2-voyage-emissions-data-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/VesselEmissions/Tutorial 2 - Voyage Emissions Data.ipynb)" -f /src/noxfile.py
@@ -263,6 +287,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for worldoceandatabase-selector-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/WorldOceanDatabase_selector.ipynb)" -f /src/noxfile.py
@@ -281,6 +307,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for worldoceandatabase-functions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/WorldOceanDatabase_functions.ipynb)" -f /src/noxfile.py
@@ -299,6 +327,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for worldoceandatabase-selector-checkpoint-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean Database/.ipynb_checkpoints/WorldOceanDatabase_selector-checkpoint.ipynb)" -f /src/noxfile.py
@@ -317,6 +347,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for worldoceanatlas-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/World Ocean Atlas/WorldOceanAtlas.ipynb)" -f /src/noxfile.py
@@ -335,6 +367,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for wids-crw-bleaching-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/WiDS_CRW_bleaching.ipynb)" -f /src/noxfile.py
@@ -353,6 +387,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for timeseries-classification-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/timeseries_classification.ipynb)" -f /src/noxfile.py
@@ -371,6 +407,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for wids-classification-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/WiDS_classification.ipynb)" -f /src/noxfile.py
@@ -389,6 +427,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for wids-crw-bleaching-checkpoint-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/NOAA Coral Reef Watch/WiDS/.ipynb_checkpoints/WiDS_CRW_bleaching-checkpoint.ipynb)" -f /src/noxfile.py
@@ -407,6 +447,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for vesselemssions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/data/GlobalVesselEmissions/VesselEmssions.ipynb)" -f /src/noxfile.py
@@ -425,6 +467,8 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - name: List nox sessions
+        run: nox -l -f /src/noxfile.py
       - name: Run tests for simulator-comparing-emissions-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file=/src/Data Products/Simulator, Comparing Emissions.ipynb)" -f /src/noxfile.py
