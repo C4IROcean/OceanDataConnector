@@ -49,7 +49,7 @@ jobs:
     steps:
       - name: Run tests for {{slug}}
         run:
-          nox -s "{{session}}"
+          nox -s "{{session}}" -f /src/noxfile.py
         env:
           ODE_CONNECTION_STR: {% raw %}${{ secrets.ODE_CONNECTION_STR }}{% endraw %}
           ODE_MAPBOX_API_TOKEN: {% raw %}${{ secrets.ODE_MAPBOX_API_TOKEN }}{% endraw %}
