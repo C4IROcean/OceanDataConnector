@@ -53,7 +53,9 @@ def main(workdir: Path):
         fname_delimited = fname.replace(".", "__")
 
         slug = slugify(fname)
-        output_sessions[slug] = f"{session_name}(notebook_file='/src/{fname_relative}')"
+        output_sessions[
+            slug
+        ] = f"{session_name}(notebook_file='/__w/OceanDataConnector/OceanDataConnector/{fname_relative}')"
 
     output_path = workdir.joinpath("test_notebook.yml")
 
