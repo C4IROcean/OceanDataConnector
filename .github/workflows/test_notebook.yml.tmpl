@@ -47,6 +47,9 @@ jobs:
         password: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for {{slug}}

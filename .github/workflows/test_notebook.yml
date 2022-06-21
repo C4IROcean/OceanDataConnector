@@ -47,6 +47,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for obis-ipynb
@@ -67,6 +70,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for obis-checkpoint-ipynb
@@ -87,6 +93,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for marineregions-ipynb
@@ -107,6 +116,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for marineregions-checkpoint-ipynb
@@ -127,6 +139,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for worms-ipynb
@@ -147,6 +162,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for lusedata-ipynb
@@ -167,6 +185,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for lusedata-checkpoint-ipynb
@@ -187,6 +208,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for gebco-bathymetry-ipynb
@@ -207,6 +231,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for tutorial-3-hourly-ship-emissions-ipynb
@@ -227,6 +254,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for tutorial-4-green-corridor-emissions-ipynb
@@ -247,6 +277,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for tutorial-1-gridded-emissions-data-ipynb
@@ -267,6 +300,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for tutorial-2-voyage-emissions-data-ipynb
@@ -287,6 +323,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for worldoceandatabase-selector-ipynb
@@ -307,6 +346,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for worldoceandatabase-functions-ipynb
@@ -327,6 +369,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for worldoceandatabase-selector-checkpoint-ipynb
@@ -347,6 +392,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for worldoceanatlas-ipynb
@@ -367,6 +415,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for wids-crw-bleaching-ipynb
@@ -387,6 +438,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for timeseries-classification-ipynb
@@ -407,6 +461,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for wids-classification-ipynb
@@ -427,6 +484,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for wids-crw-bleaching-checkpoint-ipynb
@@ -447,6 +507,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for vesselemssions-ipynb
@@ -467,6 +530,9 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
       - name: List nox sessions
         run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for simulator-comparing-emissions-ipynb
