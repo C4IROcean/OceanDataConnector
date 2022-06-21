@@ -29,6 +29,10 @@ jobs:
           {% raw %}docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
           "ODE_CONNECTION_STR=${{ secrets.ODE_CONNECTION_STR }}" -e
           "ODE_MAPBOX_API_TOKEN=${{ secrets.ODE_MAPBOX_API_TOKEN }}" local nox -l{% endraw %}
+
+  run_tests:
+    needs: build
+    steps:
       - name: Run tests
         run:
           {% raw %}docker run -e "DATABASE_URL=${{ secrets.ODC_DATABASE_URL }}" -e
