@@ -48,10 +48,10 @@ jobs:
 
     steps:
       - name: List nox sessions
-        run: nox -l -f /src/noxfile.py
+        run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
       - name: Run tests for {{slug}}
         run:
-          nox -s "{{session}}" -f /src/noxfile.py
+          nox -s "{{session}}" -f $GITHUB_WORKSPACE/noxfile.py
         env:
           ODE_CONNECTION_STR: {% raw %}${{ secrets.ODE_CONNECTION_STR }}{% endraw %}
           ODE_MAPBOX_API_TOKEN: {% raw %}${{ secrets.ODE_MAPBOX_API_TOKEN }}{% endraw %}
