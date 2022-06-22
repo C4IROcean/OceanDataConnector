@@ -26,7 +26,7 @@ def get_notebook_files() -> Iterable[str]:
     for dir in NOTEBOOK_DIRS:
         for root, dirs, files in os.walk(os.path.join(CWD, dir)):
             for name in files:
-                if name.endswith(".ipynb") and ".ipynb_checkpoints" not in name:
+                if name.endswith(".ipynb") and ".ipynb_checkpoints" not in root:
                     yield os.path.join(root, name)
 
 
