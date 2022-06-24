@@ -1,0 +1,62 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            oceandata.azurecr.io/odc-example-notebooks-testrunner
+          flavor: |
+            latest=true
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - uses: azure/docker-login@v1
+        with:
+          login-server: oceandata.azurecr.io
+          username: {% raw %}${{ secrets.ACR_USERNAME }}{% endraw %}
+          password: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
+      - uses: actions/checkout@v3
+      - name: Build and push the docker image
+        uses: docker/build-push-action@v2
+        env:
+          DOCKER_BUILDKIT: 1
+        with:
+          push: true
+          tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
+          labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}
+
+{% for slug, session in sessions.items() %}
+  run_tests_{{slug}}:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: {% raw %}${{ secrets.ACR_USERNAME }}{% endraw %}
+        password: {% raw %}${{ secrets.ACR_PASSWORD }}{% endraw %}
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
+      - name: List nox sessions
+        run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
+      - name: Run tests for {{slug}}
+        run:
+          nox -s "{{session}}" -f $GITHUB_WORKSPACE/noxfile.py
+        env:
+          ODE_CONNECTION_STR: {% raw %}${{ secrets.ODE_CONNECTION_STR }}{% endraw %}
+          ODE_MAPBOX_API_TOKEN: {% raw %}${{ secrets.ODE_MAPBOX_API_TOKEN }}{% endraw %}
+          DATABASE_URL: {% raw %}${{ secrets.ODC_DATABASE_URL }}{% endraw %}
+{% endfor %}

@@ -26,7 +26,7 @@ def get_notebook_files() -> Iterable[str]:
     for dir in NOTEBOOK_DIRS:
         for root, dirs, files in os.walk(os.path.join(CWD, dir)):
             for name in files:
-                if name.endswith(".ipynb"):
+                if name.endswith(".ipynb") and ".ipynb_checkpoints" not in root:
                     yield os.path.join(root, name)
 
 
@@ -48,8 +48,6 @@ def test_notebook(session: Session, notebook_file: str):
 
         session.run(
             # "poetry", "run", "papermill", "--log-level", "INFO", "--execution-timeout", str(NOTEBOOK_CELL_EXECUTION_TIMEOUT_SECONDS),
-            "poetry",
-            "run",
             "papermill",
             "--log-level",
             "INFO",

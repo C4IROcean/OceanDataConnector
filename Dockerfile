@@ -2,9 +2,7 @@ FROM oceandata.azurecr.io/daskhub-python-notebook:92410250edb1ece19ab234766af0ba
 
 USER root
 
-RUN pip install poetry
 WORKDIR /src
-COPY . .
 
 RUN pip install nox papermill python-dotenv
 

@@ -19,6 +19,9 @@ poetry install
 
 ### Using pre-commit hooks
 
+The pre-commit hooks will auto-format the source files, including the notebooks,
+and generate github workflows to test each notebook seperately.
+
 In order to run the pre-commit hooks:
 
 ```sh
