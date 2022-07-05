@@ -33,6 +33,9 @@ Data:
 * **Global Vessel Emissions**
   * [Source](https://www.c4irocean.earth/c4ir-ocean-projects/ship-emissions-tracking)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/GlobalVesselEmissons.md)
+* **EMODnet Human Activity**
+  * [Source](https://www.emodnet-humanactivities.eu/)
+  * [Documentation](https://www.emodnet-humanactivities.eu/about-ha.php)
 * **Lusedata**
   * [Source](https://lusedata.no/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/notebook_update/data/lusedata/lusedata.md)
