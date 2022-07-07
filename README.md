@@ -35,7 +35,10 @@ Data:
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/GlobalVesselEmissons.md)
 * **EMODnet Human Activity**
   * [Source](https://www.emodnet-humanactivities.eu/)
-  * [Documentation](https://www.emodnet-humanactivities.eu/about-ha.php)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/ODC_datasource_updates/data/EMODnet_Human_Activity/EMODnet_HA.md)
+* **ProtectedSeas**
+  * [Source](https://www.emodnet-humanactivities.eu/)
+  * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/ODC_datasource_updates/data/EMODnet_Human_Activity/EMODnet_HA.md)
 * **Lusedata**
   * [Source](https://lusedata.no/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/notebook_update/data/lusedata/lusedata.md)
