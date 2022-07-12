@@ -31,7 +31,7 @@ Data:
   * [Source](https://www.gebco.net/)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GEBCO%20Bathymetry/GEBCO%20Bathymetry.md)
 * **Global Vessel Emissions**
-  * [Source](https://www.c4irocean.earth/c4ir-ocean-projects/ship-emissions-tracking)
+  * [Source](https://www.hubocean.earth/projects/ship-emissions-tracking)
   * [Documentation](https://github.com/C4IROcean/OceanDataConnector/blob/master/data/GlobalVesselEmissions/GlobalVesselEmissons.md)
 * **EMODnet Human Activity**
   * [Source](https://www.emodnet-humanactivities.eu/)
