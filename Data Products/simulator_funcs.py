@@ -64,75 +64,81 @@ def distance_from_port(cur_pos, start_port, end_port):
 
 
 def get_lon_lat_ports(_ports):
-    #ports is a list of ports on the format ['port1','port2']
-    
+    # ports is a list of ports on the format ['port1','port2']
+
     ports = [port.upper() for port in _ports]
-    
-    ports_string = '|'.join(ports)
-    
+
+    ports_string = "|".join(ports)
+
     df_all_ports = pd.read_csv("wpi.csv").drop(columns="Unnamed: 0")
-    df_ports = df_all_ports[
-        df_all_ports['port_name'].str.fullmatch(ports_string)
-    ][
-        [
-            'port_name',
-            'country',
-            'longitude',
-            'latitude'
-        ]
+    df_ports = df_all_ports[df_all_ports["port_name"].str.fullmatch(ports_string)][
+        ["port_name", "country", "longitude", "latitude"]
     ].reset_index(drop=True)
-    
-    
+
     for port in ports:
-        if not df_ports['port_name'].astype(str).str.fullmatch(port).any():
-            #Try and find the port using str.contains. If not trying a broader search.
-            print(f'Could not find {port}, trying a broader search'.format(port))
-            df_broader = df_all_ports[df_all_ports['port_name'].str.contains(str(port))][
-                [
-                    'port_name',
-                    'country',
-                    'longitude',
-                    'latitude'
-                ]
-            ].reset_index(drop=True)
-            if len(df_broader)>0:
-                broader_port_list = list(df_broader['port_name'])
-                print(f'Found the ports {broader_port_list}'.format(broader_port_list))
-                
+        if not df_ports["port_name"].astype(str).str.fullmatch(port).any():
+            # Try and find the port using str.contains. If not trying a broader search.
+            print(f"Could not find {port}, trying a broader search".format(port))
+            df_broader = df_all_ports[
+                df_all_ports["port_name"].str.contains(str(port))
+            ][["port_name", "country", "longitude", "latitude"]].reset_index(drop=True)
+            if len(df_broader) > 0:
+                broader_port_list = list(df_broader["port_name"])
+                print(f"Found the ports {broader_port_list}".format(broader_port_list))
+
                 num_ports = len(df_broader)
-                possible_input = list(range(1,num_ports+1))
-                possible_input.append('N')
-                possible_input.append('n')
-                port_index = input(f"""Is one of these the right port? 
+                possible_input = list(range(1, num_ports + 1))
+                possible_input.append("N")
+                possible_input.append("n")
+                port_index = input(
+                    f"""Is one of these the right port? 
                                     Type in the index of the right port, 
                                     that is a number between 1 and {num_ports}. 
-                                    Press N if all are wrong.""".format(num_ports)
-                                  )
-                if port_index != 'n' and port_index != 'N':
+                                    Press N if all are wrong.""".format(
+                        num_ports
+                    )
+                )
+                if port_index != "n" and port_index != "N":
                     port_index = int(port_index)
                 while port_index not in possible_input:
-                    port_index = input(f'Wrong input, choose between {possible_input}.'.format(possible_input))
-                    if port_index != 'n' and port_index != 'N':
+                    port_index = input(
+                        f"Wrong input, choose between {possible_input}.".format(
+                            possible_input
+                        )
+                    )
+                    if port_index != "n" and port_index != "N":
                         port_index = int(port_index)
-                if port_index == 'N' or port_index == 'n':
-                    print(' ')
-                    print(f'{port} is not in our database. Add its coordinates manually. \n'.format(port))
-                    print(' ')
+                if port_index == "N" or port_index == "n":
+                    print(" ")
+                    print(
+                        f"{port} is not in our database. Add its coordinates manually. \n".format(
+                            port
+                        )
+                    )
+                    print(" ")
                     ports.remove(port)
                 else:
-                    port_index = int(port_index)-1
-                    df_ports = pd.concat([df_ports,df_broader.iloc[[port_index]]],axis=0)
-                    ports[ports.index(port)] = df_broader['port_name'][port_index]
-            else: 
-                print(' ')
-                print(f'{port} is not in our database. Add its coordinates manually'.format(port))
+                    port_index = int(port_index) - 1
+                    df_ports = pd.concat(
+                        [df_ports, df_broader.iloc[[port_index]]], axis=0
+                    )
+                    ports[ports.index(port)] = df_broader["port_name"][port_index]
+            else:
+                print(" ")
+                print(
+                    f"{port} is not in our database. Add its coordinates manually".format(
+                        port
+                    )
+                )
                 ports.remove(port)
-                
-    df_ports.set_index('port_name',inplace=True)
-    df_ports=df_ports.loc[ports].reset_index(drop=False)
-    
-    coordinates = list(df_ports.apply(lambda row: [row['longitude'],row['latitude']],axis=1))
-    
+
+    df_ports.set_index("port_name", inplace=True)
+    df_ports = df_ports.loc[ports].reset_index(drop=False)
+
+    coordinates = list(
+        df_ports.apply(lambda row: [row["longitude"], row["latitude"]], axis=1)
+    )
+
     return df_ports, coordinates
 
 
@@ -178,14 +184,10 @@ def get_routing_table_from_mmsi(mmsi: int) -> str:
 
 
 def plot_df(df_points: pd.DataFrame, col: float = "speed_knots", norm: int = 25):
-    mid_lon = sum(df_points['lon'])/len(df_points)
-    mid_lat = sum(df_points['lat'])/len(df_points)
+    mid_lon = sum(df_points["lon"]) / len(df_points)
+    mid_lat = sum(df_points["lat"]) / len(df_points)
 
-    view_state = pdk.ViewState(
-        longitude=mid_lon,
-        latitude=mid_lat,
-        zoom=3
-    )
+    view_state = pdk.ViewState(longitude=mid_lon, latitude=mid_lat, zoom=3)
 
     layers = []
     path_layer = pdk.Layer(
@@ -220,96 +222,65 @@ def plot_df(df_points: pd.DataFrame, col: float = "speed_knots", norm: int = 25)
 
     return r
 
+
 def get_end_nodes(
-    lon0:float,
-    lat0:float,
-    lon1:float,
-    lat1:float,
-    table_routing:str,
+    lon0: float,
+    lat0: float,
+    lon1: float,
+    lat1: float,
+    table_routing: str,
     engine,
-    ddeg0:float
+    ddeg0: float,
 ):
 
-    ddeg=ddeg0
-    i0 = get_closest_node_from_coord(
-        lon0,
-        lat0,
-        table_routing,
-        engine,
-        ddeg=ddeg0
-    )
-    
+    ddeg = ddeg0
+    i0 = get_closest_node_from_coord(lon0, lat0, table_routing, engine, ddeg=ddeg0)
+
     while i0 is None:
-        ddeg2 = ddeg*1.1
+        ddeg2 = ddeg * 1.1
         print(
-                f"""Could not find the port at [{lon0},{lat0}] 
+            f"""Could not find the port at [{lon0},{lat0}] 
                 with a {ddeg} degrees radius, 
                 trying with {ddeg2:.4f}."""
-             )
-        ddeg = ddeg2
-        i0 = get_closest_node_from_coord(
-            lon0,
-            lat0,
-            table_routing,
-            engine,
-            ddeg=ddeg
         )
-    if ddeg>ddeg0:
+        ddeg = ddeg2
+        i0 = get_closest_node_from_coord(lon0, lat0, table_routing, engine, ddeg=ddeg)
+    if ddeg > ddeg0:
         print(
-                f"""The closest node to the port at [{lon0:.4f},{lat0:.4f}] 
+            f"""The closest node to the port at [{lon0:.4f},{lat0:.4f}] 
                 is at [{i0.lon:.4f},{i0.lat:.4f}] using a 
                 {ddeg:.4f} degree radius."""
-             )
-
-    ddeg=ddeg0
-    i1 = get_closest_node_from_coord(
-        lon1,
-        lat1,
-        table_routing,
-        engine,
-        ddeg=ddeg
-    )
-    while i1 is None:
-        ddeg2 = ddeg*1.1
-        ddeg = ddeg2
-        i1 = get_closest_node_from_coord(
-            lon1,
-            lat1,
-            table_routing,
-            engine,
-            ddeg=ddeg
         )
-    if ddeg>ddeg0:
+
+    ddeg = ddeg0
+    i1 = get_closest_node_from_coord(lon1, lat1, table_routing, engine, ddeg=ddeg)
+    while i1 is None:
+        ddeg2 = ddeg * 1.1
+        ddeg = ddeg2
+        i1 = get_closest_node_from_coord(lon1, lat1, table_routing, engine, ddeg=ddeg)
+    if ddeg > ddeg0:
         print(
             f"""The closest node to the port at [{lon1:.4f},{lat1:.4f}] 
             is at [{i1.lon:.4f},{i1.lat:.4f}] using a 
             {ddeg:.4f} degree radius."""
         )
-    
-    return i0,i1
+
+    return i0, i1
 
 
 def simulate_path_fine_routing_0(
-    lon0:float,
-    lat0:float,
-    lon1:float,
-    lat1:float,
-    routing_speed:float,
-    table_routing:str,
-    cost_density:float,
+    lon0: float,
+    lat0: float,
+    lon1: float,
+    lat1: float,
+    routing_speed: float,
+    table_routing: str,
+    cost_density: float,
     engine,
-    ddeg
+    ddeg,
 ) -> pd.DataFrame:
-    
-    i0,i1 = get_end_nodes(
-        lon0,
-        lat0,
-        lon1,
-        lat1,
-        table_routing, 
-        engine, 
-        ddeg0=ddeg
-    )
+
+    i0, i1 = get_end_nodes(lon0, lat0, lon1, lat1, table_routing, engine, ddeg0=ddeg)
     if i0 is None or i1 is None:
         raise Exception("End nodes not found")
     for bbox in [0.5, 1, 2, 4]:
@@ -329,31 +300,23 @@ def simulate_path_fine_routing_0(
             print("Expanding bbox on route search")
 
     df_path = df_path_h4
-    
+
     return df_path
 
 
 def simulate_path_fine_routing_1(
-    lon0:float,
-    lat0:float,
-    lon1:float,
-    lat1:float,
-    routing_speed:float,
-    table_routing:str,
-    cost_density:float,
+    lon0: float,
+    lat0: float,
+    lon1: float,
+    lat1: float,
+    routing_speed: float,
+    table_routing: str,
+    cost_density: float,
     engine,
-    ddeg
+    ddeg,
 ) -> pd.DataFrame:
-    
-    i0, i1 = get_end_nodes(
-        lon0, 
-        lat0, 
-        lon1,
-        lat1, 
-        table_routing, 
-        engine, 
-        ddeg0=ddeg
-    )
+
+    i0, i1 = get_end_nodes(lon0, lat0, lon1, lat1, table_routing, engine, ddeg0=ddeg)
     if i0 is None or i1 is None:
         raise Exception("End nodes not found")
     df_path_h4 = get_best_path(
@@ -368,8 +331,8 @@ def simulate_path_fine_routing_1(
     )
     if df_path_h4 is None:
         raise Exception("No route found")
-    i0,i1 = get_end_nodes(
-        lon0,lat0,lon1,lat1, table_routing.replace("h4", "h5"), engine, ddeg0=ddeg
+    i0, i1 = get_end_nodes(
+        lon0, lat0, lon1, lat1, table_routing.replace("h4", "h5"), engine, ddeg0=ddeg
     )
     if i0 is None or i1 is None:
         raise Exception("End nodes not found")
@@ -393,25 +356,25 @@ def simulate_path_fine_routing_1(
 
 
 def simulate_path_fine_routing_2(
-    lon0:float,
-    lat0:float,
-    lon1:float,
-    lat1:float,
-    routing_speed:float,
-    table_routing:str,
-    cost_density:float,
+    lon0: float,
+    lat0: float,
+    lon1: float,
+    lat1: float,
+    routing_speed: float,
+    table_routing: str,
+    cost_density: float,
     engine,
-    ddeg
+    ddeg,
 ) -> pd.DataFrame:
-    
+
     i0, i1 = get_end_nodes(
         lon0,
         lat0,
         lon1,
         lat1,
-        table_routing.replace("h4", "h5"), 
-        engine, 
-        ddeg0=ddeg / 10
+        table_routing.replace("h4", "h5"),
+        engine,
+        ddeg0=ddeg / 10,
     )
     df_path_h5 = get_best_path(
         i0,
@@ -427,25 +390,23 @@ def simulate_path_fine_routing_2(
     return df_path
 
 
-
 def simulate_path(
-    lon0:float,
-    lat0:float,
-    lon1:float,
-    lat1:float,
+    lon0: float,
+    lat0: float,
+    lon1: float,
+    lat1: float,
     tcp,
-    routing_speed:float,
-    table_routing:str,
+    routing_speed: float,
+    table_routing: str,
     FINE_ROUTING=0,
     ddeg=0.22,
     resolution_minutes=60,
-    cost_density=0.3, 
-    start_time=pd.Timestamp("2022-01-01")
+    cost_density=0.3,
+    start_time=pd.Timestamp("2022-01-01"),
 ):
-    
-    engine=tcp.getconn()
 
-    
+    engine = tcp.getconn()
+
     if FINE_ROUTING == 1:
         df_path = simulate_path_fine_routing_1(
             lon0,
@@ -455,10 +416,11 @@ def simulate_path(
             routing_speed,
             table_routing,
             cost_density,
-            engine,ddeg
-        ) 
-    elif FINE_ROUTING == 0: 
-        df_path= simulate_path_fine_routing_0(
+            engine,
+            ddeg,
+        )
+    elif FINE_ROUTING == 0:
+        df_path = simulate_path_fine_routing_0(
             lon0,
             lat0,
             lon1,
@@ -467,10 +429,10 @@ def simulate_path(
             table_routing,
             cost_density,
             engine,
-            ddeg
+            ddeg,
         )
     else:
-        df_path= simulate_path_fine_routing_2(
+        df_path = simulate_path_fine_routing_2(
             lon0,
             lat0,
             lon1,
@@ -479,14 +441,12 @@ def simulate_path(
             table_routing,
             cost_density,
             engine,
-            ddeg
+            ddeg,
         )
 
-    
     if df_path is None:
         raise Exception("No route found for given coordinates and routing graph")
-    
-    
+
     df_path["total_length_m"] = df_path.length_m.cumsum()
     df_path["vessel_spd"][df_path["vessel_spd"] < 5] = 5
     df_path["time_s"] = df_path["length_m"] / (df_path["vessel_spd"] / 1.94384449)
@@ -498,7 +458,7 @@ def simulate_path(
 
     df_path["speed_knots"] = df_path["vessel_spd"]
     df_path["implied_speed_knots"] = df_path["vessel_spd"]
-    
+
     df_path.set_index("timestamp", inplace=True)
     df_path.dropna(inplace=True)
     df = (
@@ -516,7 +476,7 @@ def simulate_path(
         .mean()
     ).iloc[1:-1]
     df.dropna(inplace=True)
-    
+
     _df = check_in_regions(df, engine)
     df["in_a_eca"] = _df["in_a_eca"].values * 1
     df["in_a_river"] = _df["in_a_river"].values * 1
@@ -528,28 +488,28 @@ def simulate_path(
         axis=1,
     )
     df = distance_from_shore(df)
-    
+
     return df
-        
-  
- # function to make paths from A to B to C to...
+
+
+# function to make paths from A to B to C to...
 def simulate_long_path(
-    list_of_ports:list,
+    list_of_ports: list,
     tcp,
-    routing_speed:float,
-    table_routing:str,
+    routing_speed: float,
+    table_routing: str,
     FINE_ROUTING=0,
     ddeg=0.22,
     resolution_minutes=60,
-    cost_density=0.3, 
-    start_time=pd.Timestamp("2022-01-01")
+    cost_density=0.3,
+    start_time=pd.Timestamp("2022-01-01"),
 ):
 
-    for port_index in range(0,len(list_of_ports)-1):
+    for port_index in range(0, len(list_of_ports) - 1):
         lon0 = list_of_ports[port_index][0]
         lat0 = list_of_ports[port_index][1]
-        lon1 = list_of_ports[port_index+1][0]
-        lat1 = list_of_ports[port_index+1][1]
+        lon1 = list_of_ports[port_index + 1][0]
+        lat1 = list_of_ports[port_index + 1][1]
         df_path_2 = simulate_path(
             lon0,
             lat0,
@@ -561,30 +521,26 @@ def simulate_long_path(
             FINE_ROUTING,
             ddeg,
             resolution_minutes,
-            cost_density, 
-            start_time
+            cost_density,
+            start_time,
         )
         if port_index == 0:
             df_path = df_path_2
         else:
-            df_path = pd.concat([df_path,df_path_2])
-            
+            df_path = pd.concat([df_path, df_path_2])
+
     return df_path
 
-    
-#function that finds emissions from paths
-#could also be full paths that for A-B-C-... 
-#argument: dataframe made with simulate_path or the function that
-#simualtes paths for multiple ports (but uses simulate_path to do so)
+
+# function that finds emissions from paths
+# could also be full paths that for A-B-C-...
+# argument: dataframe made with simulate_path or the function that
+# simualtes paths for multiple ports (but uses simulate_path to do so)
 def emissions_on_simulated_path(
-    df:pd.DataFrame, 
-    ssvid:int, 
-    draught, 
-    vessel_particulars, 
-    resolution_minutes
+    df: pd.DataFrame, ssvid: int, draught, vessel_particulars, resolution_minutes
 ) -> pd.DataFrame:
-    
-    df['ssvid']=ssvid
+
+    df["ssvid"] = ssvid
     df["draught_recent_m"] = draught
 
     ship = Ship(vessel_particulars)
@@ -624,13 +580,15 @@ def emissions_on_simulated_path(
     return df_emissions[labels]
 
 
-def find_routing_speed(routing_speed,vessel_particulars):
+def find_routing_speed(routing_speed, vessel_particulars):
     if routing_speed == None:
         return float(vessel_particulars["max_speed"][1])
-    
+
+
 def find_draught(draught, vessel_particulars):
     if draught == None:
-        return vessel_particulars['design_draught']    
+        return vessel_particulars["design_draught"]
+
 
 def sum_emissions_df(df):
     # Keep only the relevant columns
@@ -648,65 +606,60 @@ def sum_emissions_df(df):
     return df[cols].groupby(["ssvid"]).sum()
 
 
-#function that sums all the emissions for one vessel and comapres it to the other emissions
-def compare_emissions(list_of_dfs:list):
+# function that sums all the emissions for one vessel and comapres it to the other emissions
+def compare_emissions(list_of_dfs: list):
     summed_emissions = list(map(sum_emissions_df, list_of_dfs))
-    #sum all of the emissions for each vessel
+    # sum all of the emissions for each vessel
     df_emissions = pd.concat(summed_emissions)
     df_emissions = df_emissions.sort_values(by="emissions_CO2", ascending=True)
     return df_emissions
 
-    
-#function to take in more than one vessel, more than two ports and find paths for the vessels if speed is similar
-#and emissions on the paths for each vessel
+
+# function to take in more than one vessel, more than two ports and find paths for the vessels if speed is similar
+# and emissions on the paths for each vessel
 def emissions_and_paths(
-    coordinates, 
+    coordinates,
     df_input,
-    time_reso=60, 
+    time_reso=60,
     detailed_routing=1,
     cost_density=0.30,
-    start_time=pd.Timestamp("2022-01-01")
+    start_time=pd.Timestamp("2022-01-01"),
 ):
-    #reset index here and then set it back at the end of this function
+    # reset index here and then set it back at the end of this function
     df_input.reset_index(inplace=True)
-    
-    dict_of_paths = {} #key is the graph type
+
+    dict_of_paths = {}  # key is the graph type
     list_of_emissions_df = []
     summed_emissions = []
-    
-    tcp = get_connection_pool()
-    #first find all path using find_long_path 
-    #either the average of teh speeds or chaching the vessels with the same speed. 
-    #that means that you need to find the speeds here. 
-    df_input['vessel_particulars'] = df_input.apply(
-        lambda row: fetch_ship_data(tcp,row['index']),axis=1
-    )
-    df_input['speeds'] = df_input.apply(
-        lambda row: find_routing_speed(row['speeds'],row['vessel_particulars']),
-        axis=1
-    )
-    df_input['draughts'] = df_input.apply(
-        lambda row: find_draught(row['draughts'],row['vessel_particulars']),
-        axis=1
-    )
-    df_input['graphs'] = df_input.apply(
-        lambda row: get_routing_table_from_mmsi(row['index']),
-        axis=1
-    )
-    
 
-    
-    #loop over df_input['graph'] to find paths for each graph. use average speed for the graphs. 
-    for graph in df_input['graphs'].unique():
-        df_temp = df_input.loc[df_input['graphs']==graph]
-        if len(df_temp)>1:
-            avg_speed = sum(df_temp['speeds'])/len(df_temp)
-        else: 
-            avg_speed = df_temp['speeds'].iloc[0]
+    tcp = get_connection_pool()
+    # first find all path using find_long_path
+    # either the average of teh speeds or chaching the vessels with the same speed.
+    # that means that you need to find the speeds here.
+    df_input["vessel_particulars"] = df_input.apply(
+        lambda row: fetch_ship_data(tcp, row["index"]), axis=1
+    )
+    df_input["speeds"] = df_input.apply(
+        lambda row: find_routing_speed(row["speeds"], row["vessel_particulars"]), axis=1
+    )
+    df_input["draughts"] = df_input.apply(
+        lambda row: find_draught(row["draughts"], row["vessel_particulars"]), axis=1
+    )
+    df_input["graphs"] = df_input.apply(
+        lambda row: get_routing_table_from_mmsi(row["index"]), axis=1
+    )
+
+    # loop over df_input['graph'] to find paths for each graph. use average speed for the graphs.
+    for graph in df_input["graphs"].unique():
+        df_temp = df_input.loc[df_input["graphs"] == graph]
+        if len(df_temp) > 1:
+            avg_speed = sum(df_temp["speeds"]) / len(df_temp)
+        else:
+            avg_speed = df_temp["speeds"].iloc[0]
         table_routing_base = "vessel_emissions.ais_gfw_heatmap_h4_{}_crosslines"
         table_routing = table_routing_base.format(graph)
         df_path = simulate_long_path(
-            coordinates, 
+            coordinates,
             tcp,
             avg_speed,
             table_routing,
@@ -714,32 +667,31 @@ def emissions_and_paths(
             ddeg=0.22,
             resolution_minutes=time_reso,
             cost_density=cost_density,
-            start_time=start_time
+            start_time=start_time,
         )
         dict_of_paths[graph] = df_path
-        
-        if len(df_temp)>1:
-            mmsi_strings = [str(x) for x in df_temp['index']]
+
+        if len(df_temp) > 1:
+            mmsi_strings = [str(x) for x in df_temp["index"]]
             mmsis_str = " ".join(mmsi_strings)
             print(f"Path finding for vessels with mmmsis {mmsis_str} is done. ")
         else:
-            mmsi_one = list(df_temp['index'])[0]
+            mmsi_one = list(df_temp["index"])[0]
             print(f"Path finding for vessels with mmmsi {mmsi_one} is done. ")
 
-    df_input['emissions_on_path'] = df_input.apply(
+    df_input["emissions_on_path"] = df_input.apply(
         lambda row: emissions_on_simulated_path(
-            dict_of_paths[row['graphs']],
-            row['index'], 
-            row['draughts'],
-            row['vessel_particulars'], 
-            time_reso
-        ), 
-        axis=1
+            dict_of_paths[row["graphs"]],
+            row["index"],
+            row["draughts"],
+            row["vessel_particulars"],
+            time_reso,
+        ),
+        axis=1,
     )
-    
-    
-    df_input.drop(columns=['vessel_particulars'],inplace=True)
-    df_input.set_index('index',inplace=True)      
-    df_summed_emissions = compare_emissions(df_input['emissions_on_path'])
-    
+
+    df_input.drop(columns=["vessel_particulars"], inplace=True)
+    df_input.set_index("index", inplace=True)
+    df_summed_emissions = compare_emissions(df_input["emissions_on_path"])
+
     return df_input, df_summed_emissions
