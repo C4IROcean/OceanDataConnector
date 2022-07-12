@@ -175,6 +175,29 @@ jobs:
           ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
           DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
 
+  run_tests_protectedseas-mpa-ipynb:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
+      - name: List nox sessions
+        run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
+      - name: Run tests for protectedseas-mpa-ipynb
+        run:
+          nox -s "test_notebook-3.9(notebook_file='/__w/OceanDataConnector/OceanDataConnector/data/ProtectedSeas MPA/ProtectedSeas_MPA.ipynb')" -f $GITHUB_WORKSPACE/noxfile.py
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
+
   run_tests_worldoceandatabase-ipynb:
     needs: build
     runs-on: ubuntu-latest
@@ -331,6 +354,29 @@ jobs:
       - name: Run tests for wids-classification-ipynb
         run:
           nox -s "test_notebook-3.9(notebook_file='/__w/OceanDataConnector/OceanDataConnector/data/NOAA Coral Reef Watch/WiDS/WiDS_classification.ipynb')" -f $GITHUB_WORKSPACE/noxfile.py
+        env:
+          ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
+          ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.ODC_DATABASE_URL }}
+
+  run_tests_oceanlab-ipynb:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: oceandata.azurecr.io/odc-example-notebooks-testrunner:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -l $GITHUB_WORKSPACE
+      - run: ls -l $GITHUB_WORKSPACE/..
+      - name: List nox sessions
+        run: nox -l -f $GITHUB_WORKSPACE/noxfile.py
+      - name: Run tests for oceanlab-ipynb
+        run:
+          nox -s "test_notebook-3.9(notebook_file='/__w/OceanDataConnector/OceanDataConnector/data/OceanLab/OceanLab.ipynb')" -f $GITHUB_WORKSPACE/noxfile.py
         env:
           ODE_CONNECTION_STR: ${{ secrets.ODE_CONNECTION_STR }}
           ODE_MAPBOX_API_TOKEN: ${{ secrets.ODE_MAPBOX_API_TOKEN }}
