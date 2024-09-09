@@ -1,24 +1,18 @@
+import os
+import re
+from pathlib import Path
 from typing import Dict, Tuple
-from jinja2 import Template
-from slugify import slugify
-import typer
 
+import typer
+from jinja2 import Template
 from nox._options import noxfile_options
 from nox.tasks import discover_manifest, load_nox_module
+from slugify import slugify
 
-import importlib
-import os
-import subprocess
-from pathlib import Path
-import re
-
-SESSION_REGEX = re.compile(
-    r"(?:\*\s+)?([a-zA-Z\-_0-9\.]+)\(((?:[a-zA-Z\-_0-9\.]+='[/a-zA-Z\-_0-9\.\ ,]+',?)+)\)"
-)
+SESSION_REGEX = re.compile(r"(?:\*\s+)?([a-zA-Z\-_0-9\.]+)\(((?:[a-zA-Z\-_0-9\.]+='[/a-zA-Z\-_0-9\.\ ,]+',?)+)\)")
 
 
 def parse_session(session_str: str) -> Tuple[str, Dict[str, str]]:
-
     m = SESSION_REGEX.match(session_str)
 
     if not m:
@@ -34,7 +28,6 @@ def parse_session(session_str: str) -> Tuple[str, Dict[str, str]]:
 
 
 def main(workdir: Path):
-
     noxfile_options.noxfile = "noxfile.py"
     noxfile_options.extra_pythons = []
     noxfile_options.posargs = []
@@ -45,12 +38,11 @@ def main(workdir: Path):
     output_sessions = {}
 
     for session_str in sessions:
-
         session_name, session_params = parse_session(session_str)
 
         fname = Path(session_params["notebook_file"]).name
         fname_relative = Path(session_params["notebook_file"]).relative_to(os.getcwd())
-        fname_delimited = fname.replace(".", "__")
+        # fname_delimited = fname.replace(".", "__")
 
         slug = slugify(fname)
         output_sessions[
