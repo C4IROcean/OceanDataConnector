@@ -5,10 +5,24 @@ description = ""
 authors = ["TaraOceanData <67681457+TaraOceanData@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
+odp-sdk = "^0.7.6"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+ignore = ["E203", "E731", "W503", "E266", "E221", "E222", "E231"]
+per-file-ignores = ["*/__init__.py:F401", "tests/*:F841"]
+max-line-length = 120
+count = true
+
+[tool.isort]
+line_length = 120                # corresponds to -w  flag
+multi_line_output = 3            # corresponds to -m  flag
+include_trailing_comma = true    # corresponds to -tc flag
+profile = "black"
+known_local_folder = "odp,tests"
