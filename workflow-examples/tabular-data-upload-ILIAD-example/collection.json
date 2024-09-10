@@ -6,7 +6,7 @@
         "display_name": "Iliad Hackathon 2024",
         "description": "A data collection of data for the Iliad Hackthon 2024",
         "labels": {
-            "catalog.hubocean.io/internal": true
+            "catalog.hubocean.io/test": true
         }
     },
     "spec": {
