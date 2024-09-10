@@ -10,7 +10,7 @@
             "display_name": "Iliad Wavy Drifter Data Glomma into the Hvaler area/Oslofjord",
             "description": "A data collection of data from Wavy drifters from the Iliad project in the Oslofjord",
             "labels": {
-                "catalog.hubocean.io/internal": true
+                "catalog.hubocean.io/test": true
             }
         },
         "spec": {
