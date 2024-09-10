@@ -1,0 +1,145 @@
+{
+    "raw_file_names": [
+        "iliad.parquet"
+    ],
+    "dataset_config": {
+        "kind": "catalog.hubocean.io/dataset",
+        "version": "v1alpha3",
+        "metadata": {
+            "name": "iliad-wavy-oslo",
+            "display_name": "Iliad Wavy Drifter Data Glomma into the Hvaler area/Oslofjord",
+            "description": "A data collection of data from Wavy drifters from the Iliad project in the Oslofjord",
+            "labels": {
+                "catalog.hubocean.io/test": true
+            }
+        },
+        "spec": {
+            "storage_class": "registry.hubocean.io/storageClass/tabular",
+            "storage_controller": "registry.hubocean.io/storageController/storage-tabular",
+            "data_collection": "catalog.hubocean.io/dataCollection/",
+            "maintainer": {
+                "contact": "Arne Jørgen Berre <Arne.J.Berre@sintef.no>",
+                "organisation": "SINTEF Ocean"
+            },
+            "citation": {
+                "cite_as": "Iliad Hacakthon 2024"
+            },
+            "documentation": [
+                "https://geoportal.ec-meloa.eu/#/geoportal"
+            ],
+            "attributes": [],
+            "facets": null,
+            "tags": [
+                "wavy drifter",
+                "Iliad"
+            ]
+        }
+    },
+    "table_schema": {
+        "timestamp": {
+            "type": "timestamp<s>"
+        },
+        "record": {
+            "type": "long"
+        },
+        "height": {
+            "type": "double"
+        },
+        "speed": {
+            "type": "double"
+        },
+        "course": {
+            "type": "double"
+        },
+        "satellites": {
+            "type": "long"
+        },
+        "validity": {
+            "type": "double"
+        },
+        "hdop": {
+            "type": "double"
+        },
+        "vdop": {
+            "type": "double"
+        },
+        "pdop": {
+            "type": "double"
+        },
+        "sep": {
+            "type": "double"
+        },
+        "ax": {
+            "type": "double"
+        },
+        "ay": {
+            "type": "double"
+        },
+        "az": {
+            "type": "double"
+        },
+        "gx": {
+            "type": "double"
+        },
+        "gy": {
+            "type": "double"
+        },
+        "gz": {
+            "type": "double"
+        },
+        "mx": {
+            "type": "double"
+        },
+        "my": {
+            "type": "double"
+        },
+        "mz": {
+            "type": "double"
+        },
+        "temp_imu": {
+            "type": "double"
+        },
+        "temp_1": {
+            "type": "double"
+        },
+        "temp_2": {
+            "type": "double"
+        },
+        "temp_3": {
+            "type": "double"
+        },
+        "temp_4": {
+            "type": "double"
+        },
+        "atm": {
+            "type": "double"
+        },
+        "year": {
+            "type": "long"
+        },
+        "month": {
+            "type": "long"
+        },
+        "day": {
+            "type": "long"
+        },
+        "hour": {
+            "type": "long"
+        },
+        "minute": {
+            "type": "long"
+        },
+        "second": {
+            "type": "long"
+        },
+        "rssi": {
+            "type": "long"
+        },
+        "ref": {
+            "type": "double"
+        },
+        "geometry": {
+            "type": "geometry"
+        }
+    }
+}
