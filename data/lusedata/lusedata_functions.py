@@ -1,17 +1,11 @@
-import pandas as pd
-import numpy as np
-from sqlalchemy import create_engine
-import altair as alt
-import geopandas as gpd
-import pydeck as pdk
-from PIL import Image
-from os import environ, getenv, path
-from datetime import date, datetime, timedelta
-from jinjasql import JinjaSql
-import unidecode
 import warnings
-import os
-from os import environ, getenv, path
+from os import getenv
+
+import altair as alt
+import pandas as pd
+import unidecode
+from jinjasql import JinjaSql
+from sqlalchemy import create_engine
 
 
 def make_engine():
@@ -35,18 +29,14 @@ def pull_produksjonomrade():
                from raw_ops_seafood.lokalitet
                order by  produksjonsomradenr"""
     df_prod = pd.read_sql(query, engine)
-    df_prod["prod_nummer"] = (
-        df_prod["produksjonsomradenr"].astype(int).astype(str)
-        + " "
-        + df_prod["produksjonsomrade"]
-    )
+    df_prod["prod_nummer"] = df_prod["produksjonsomradenr"].astype(int).astype(str) + " " + df_prod["produksjonsomrade"]
     return df_prod
 
 
 def pull_subregion_list():
     engine = make_engine()
     query = """select distinct subregion
-               from raw_ops_seafood.lokalitet 
+               from raw_ops_seafood.lokalitet
                order by subregion"""
     df = pd.read_sql(query, engine)
     return df["subregion"]
@@ -55,7 +45,7 @@ def pull_subregion_list():
 def pull_zone_list():
     engine = make_engine()
     query = """select distinct sone
-               from raw_ops_seafood.lokalitet 
+               from raw_ops_seafood.lokalitet
                order by sone"""
     df = pd.read_sql(query, engine)
     return df
@@ -70,7 +60,7 @@ def pull_location_list_map(sone: str, year=None):
     if year:
         params = {"sone": sone, "year": year}
         query = """select distinct lokalitet
-                   from raw_ops_seafood.joined_salmon_lice_data 
+                   from raw_ops_seafood.joined_salmon_lice_data
                    where sone = {{sone}}
                    and year ={{year}}
                    order by lokalitet"""
@@ -78,7 +68,7 @@ def pull_location_list_map(sone: str, year=None):
     else:
         params = {"sone": sone}
         query = """select distinct lokalitet
-                   from raw_ops_seafood.joined_salmon_lice_data 
+                   from raw_ops_seafood.joined_salmon_lice_data
                    where sone = {{sone}}
                    order by lokalitet"""
 
@@ -195,16 +185,13 @@ def df_avg_lice(year_range, week_range, location_level, location):
     return df.round(2)
 
 
-def average_lice_plots(
-    year_range, week_range, lice_type, location_level, location, y_scale=None
-):
+def average_lice_plots(year_range, week_range, lice_type, location_level, location, y_scale=None):
     df_plot_agg = df_avg_lice(year_range, week_range, location_level, location)
     df_plot_agg["year"] = df_plot_agg["år"]
     df_plot_agg = df_plot_agg.astype({"uke": int, "year": int})
     df_plot_agg.sort_values(["year", "uke"])
 
     selection = alt.selection_multi(fields=["year"], bind="legend")
-    y_value = lice_type
 
     if lice_type == "voksne_hunnlus":
         plot_title = "Voksne hunnlus per fisk i {}".format(location)
@@ -237,18 +224,14 @@ def average_lice_plots(
                 color=alt.Color(
                     "year:N",
                     title="År",
-                    scale=alt.Scale(
-                        domain=df_plot_agg["year"].unique(), scheme="paired"
-                    ),
+                    scale=alt.Scale(domain=df_plot_agg["year"].unique(), scheme="paired"),
                 ),
                 opacity=alt.condition(selection, alt.value(1), alt.value(0.2)),
                 tooltip=[alt.Tooltip(lice_type, format=",.2f", title="Lus per fisk")],
             )
             .properties(title=plot_title)
             .configure_axis(labelFontSize=15, titleFontSize=15)
-            .configure_legend(
-                labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100
-            )
+            .configure_legend(labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100)
             .add_selection(selection)
             .interactive()
         )
@@ -269,18 +252,14 @@ def average_lice_plots(
                 color=alt.Color(
                     "year:N",
                     title="År",
-                    scale=alt.Scale(
-                        domain=df_plot_agg["year"].unique(), scheme="paired"
-                    ),
+                    scale=alt.Scale(domain=df_plot_agg["year"].unique(), scheme="paired"),
                 ),
                 opacity=alt.condition(selection, alt.value(1), alt.value(0.2)),
                 tooltip=[alt.Tooltip(lice_type, format=",.2f", title="Lus per fisk")],
             )
             .properties(title=plot_title)
             .configure_axis(labelFontSize=15, titleFontSize=15)
-            .configure_legend(
-                labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100
-            )
+            .configure_legend(labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100)
             .add_selection(selection)
             .interactive()
         )
@@ -327,9 +306,7 @@ def average_sjotemp(year_range, week_range, location_level, location, y_scale=No
             )
             .properties(title=plot_title)
             .configure_axis(labelFontSize=15, titleFontSize=15)
-            .configure_legend(
-                labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100
-            )
+            .configure_legend(labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100)
             .add_selection(selection)
             .interactive()
         )
@@ -350,18 +327,14 @@ def average_sjotemp(year_range, week_range, location_level, location, y_scale=No
                 color=alt.Color(
                     "year:N",
                     title="År",
-                    scale=alt.Scale(
-                        domain=df_plot_agg["year"].unique(), scheme="paired"
-                    ),
+                    scale=alt.Scale(domain=df_plot_agg["year"].unique(), scheme="paired"),
                 ),
                 opacity=alt.condition(selection, alt.value(1), alt.value(0.2)),
                 tooltip=[alt.Tooltip("sjotemperatur")],
             )
             .properties(title=plot_title)
             .configure_axis(labelFontSize=15, titleFontSize=15)
-            .configure_legend(
-                labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100
-            )
+            .configure_legend(labelFontSize=12, columns=1, labelLimit=500, symbolLimit=100)
             .add_selection(selection)
             .interactive()
         )
@@ -369,9 +342,7 @@ def average_sjotemp(year_range, week_range, location_level, location, y_scale=No
     return chart
 
 
-def plot_treatments(
-    year_range, week_range, location_level, location, treatments, y_scale
-):
+def plot_treatments(year_range, week_range, location_level, location, treatments, y_scale):
     engine = make_engine()
 
     if location_level == "Produksjonsområde":
@@ -559,9 +530,7 @@ def plot_treatments(
         .properties(
             width=800,
             height=500,
-            title="Totalt antall behandlinger og voksne hunnlus i {}, {}".format(
-                location, str(year_range[0])
-            ),
+            title="Totalt antall behandlinger og voksne hunnlus i {}, {}".format(location, str(year_range[0])),
         )
         .add_selection(selection)
         .interactive()
@@ -570,9 +539,7 @@ def plot_treatments(
     return chart
 
 
-def average_lice_compare(
-    years, week_range, lice_type, location_level, location_comp, location, y_scale=None
-):
+def average_lice_compare(years, week_range, lice_type, location_level, location_comp, location, y_scale=None):
     engine = make_engine()
     weeks = list(range(week_range[0], week_range[1] + 1))
     params = {
@@ -629,18 +596,13 @@ def average_lice_compare(
         y_title = "Bevegelige lus per fisk"
 
     selection = alt.selection_multi(fields=["lokalitet"], bind="legend")
-    y_value = lice_type
     chart = (
         alt.Chart(df)
         .mark_line()
         .encode(
-            x=alt.X(
-                "uke", title="Uke", sort="ascending", scale=alt.Scale(domain=(0, 52))
-            ),
+            x=alt.X("uke", title="Uke", sort="ascending", scale=alt.Scale(domain=(0, 52))),
             y=alt.Y(lice_type, title=y_title),
-            color=alt.Color(
-                "lokalitet", title="Lokalitet", scale=alt.Scale(scheme="paired")
-            ),
+            color=alt.Color("lokalitet", title="Lokalitet", scale=alt.Scale(scheme="paired")),
             opacity=alt.condition(selection, alt.value(1), alt.value(0.2)),
             tooltip=[alt.Tooltip(lice_type, title="Lus per fisk")],
         )
@@ -664,7 +626,6 @@ def get_data(year_range, week_range, location_level, location, limit=45000):
         years = year_range
 
     if location_level == "Nasjonal":
-
         params = {"year": years, "weeks": weeks, "limit": limit}
         query = """
           select *
@@ -700,9 +661,7 @@ def get_data(year_range, week_range, location_level, location, limit=45000):
     df = pd.read_sql(query, engine, params=bind_params)
 
     if df.shape[0] == limit:
-        warnings.warn(
-            "You have reached the memory limit, please make a smaller selection"
-        )
+        warnings.warn("You have reached the memory limit, please make a smaller selection")
 
     else:
         return df.drop(["index", "_last_modified"], axis=1)
