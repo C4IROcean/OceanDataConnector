@@ -7,6 +7,7 @@ authors = ["TaraOceanData <67681457+TaraOceanData@users.noreply.github.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 odp-sdk = "^0.7.6"
+pre-commit = "^4.0.1"
 
 [tool.poetry.group.dev.dependencies]
 
