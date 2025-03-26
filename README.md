@@ -9,7 +9,7 @@ We provide a number of example notebooks to get you going with Ocean Data Platfo
 
 #### Dataset Examples
 - Pull data from the ODP APIs from various datasets: EMODnetHumanActivities_access_data.ipynb, SeamountsDatabase_access_data.ipynb
-- Query data with geospatial tools with the ODP APIs: PGS_CTDBiotaADCP_access_data.ipynb
+- Query data with geospatial tools with the ODP APIs: ProtectedSeas_data.ipynb, PGS_CTDBiotaADCP_access_data.ipynb
 - Combine data from ODP with external data: PGS_OBIS_combination.ipynb
 
 #### Workflow Examples
