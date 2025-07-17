@@ -73,7 +73,7 @@ jobs:
       
       - name: Run Notebook Tests with nbval
         run: |
-          pytest --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb
+          pytest -v --tb=short --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb -rA
 
 
       #- name: Run notebook tests with nbval-lax
