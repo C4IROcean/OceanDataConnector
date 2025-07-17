@@ -1,0 +1,52 @@
+name: Notebook Examples Tests (JupyterHub Image)
+
+on:
+  #schedule:
+  #  - cron: "0 6 * * *"  # every day at 6 AM
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-notebooks:
+    name: Run nbval tests inside JupyterHub Docker image
+    runs-on: ubuntu-latest
+
+    container:
+      image: oceandata.azurecr.io/odc-odp-workspace:latest
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    steps:
+      - name: Checkout OceanDataConnector repo
+        uses: actions/checkout@v3
+        with:
+          repository: C4IROcean/OceanDataConnector
+          path: ocean-data-connector
+
+      - name: Copy dataset-examples to notebooks
+        run: |
+          cp -r ocean-data-connector/dataset-examples ./dataset-examples
+          ls -R ./dataset-examples
+          
+      - name: Install other packages  # we should link this to the original source of package installing
+        run: |
+          set -e
+          pip install -U odp-sdk --quiet || echo "Failed to install odp-sdk"
+          pip install -U h3==3.7.7 --quiet || echo "Failed to install h3"
+          pip install -U pydeck==0.9.1 --quiet || echo "Failed to install pydeck"
+      
+          if grep -q "JUPYTERGIS" /hubocean-image-type.txt; then
+            echo "Jupyter GIS image detected, skipping package installation"
+          else
+            pip install -U jupyter_collaboration==4.0.2 --quiet || echo "Failed to install jupyter_collaboration"
+          fi
+
+      - name: Install nbval (if not already in image)
+        run: |
+          pip install pytest nbval
+
+      - name: Run notebook tests with nbval-lax
+        run: |
+          pytest --nbval-lax dataset-examples/**/*.ipynb
