@@ -18,6 +18,8 @@ jobs:
       credentials:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
+      env:
+        ODP_API_KEY: ${{ secrets.MY_ODP_API_KEY }}
 
     steps:
 
@@ -67,9 +69,6 @@ jobs:
       
               monkeypatch.setattr(OdpClient, "__init__", patched_init)
           EOF
-
-      - name: Set environment secret
-        run: echo "ODP_API_KEY=${{ secrets.MY_ODP_API_KEY }}" >> $GITHUB_ENV
       
       - name: Run Notebook Tests with nbval
         run: |
