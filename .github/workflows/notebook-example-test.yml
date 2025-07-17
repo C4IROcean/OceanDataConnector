@@ -21,15 +21,11 @@ jobs:
 
     steps:
 
-      - name: Checkout only notebooks folder
+      - name: Checkout OceanDataConnector repo
         uses: actions/checkout@v3
         with:
-          sparse-checkout: true
-          sparse-checkout-paths: |
-            dataset-examples/
-       
-      - name: List notebooks content
-        run: ls -R . #ls -R ocean-data-connector/dataset-examples/
+          repository: C4IROcean/OceanDataConnector
+          path: ocean-data-connector
 
       - name: Copy dataset-examples to notebooks
         run: |
@@ -55,5 +51,5 @@ jobs:
 
       - name: Run notebook tests with nbval-lax
         run: |
-          pytest --nbval-lax dataset-examples/*.ipynb --collect-only -v
+          pytest --nbval-lax ./dataset-examples/*.ipynb --collect-only -v
 
