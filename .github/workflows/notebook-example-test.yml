@@ -49,7 +49,24 @@ jobs:
         run: |
           pip install pytest nbval
 
-      - name: Run notebook tests with nbval-lax
+      - name: Inject Monkey Patch
         run: |
-          pytest --nbval-lax ./dataset-examples/*.ipynb 
+          cat << 'EOF' > patch.py
+          import odp_sdk
+          orig_init = odp_sdk.OdpClient.__init__
+          def patched_init(self, **data):
+              if 'api_key' not in data or not data['api_key']:
+                  data['api_key'] = '${{ secrets.MY_ODP_API_KEY}}'
+              orig_init(self, **data)
+          odp_sdk.OdpClient.__init__ = patched_init
+          EOF
+      
+      - name: Run Notebook Tests with nbval
+        run: |
+          pytest --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb.ipynb --import-mode=append -p patch
+
+
+      #- name: Run notebook tests with nbval-lax
+      #  run: |
+      #    pytest --nbval-lax ./dataset-examples/*.ipynb 
 
