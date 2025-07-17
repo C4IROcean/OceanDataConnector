@@ -29,11 +29,11 @@ jobs:
             dataset-examples/
 
       - name: List notebooks content
-        run: ls -R dataset-examples/
+        run: ls -R ocean-data-connector/dataset-examples/
 
       - name: Copy dataset-examples to notebooks
         run: |
-          cp -r dataset-examples ./dataset-examples
+          cp -r ocean-data-connector/dataset-examples/ ./dataset-examples
           ls -R ./dataset-examples
           
       - name: Install other packages  # we should link this to the original source of package installing
