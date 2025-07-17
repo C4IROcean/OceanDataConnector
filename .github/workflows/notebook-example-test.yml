@@ -51,7 +51,7 @@ jobs:
 
       - name: Inject Monkey Patch
         run: |
-          cat << 'EOF' > patch.py
+          cat << 'EOF' > ./dataset-examples/patch.py
           import odp_sdk
           orig_init = odp_sdk.OdpClient.__init__
           def patched_init(self, **data):
