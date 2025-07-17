@@ -60,7 +60,7 @@ jobs:
       
           @pytest.fixture(autouse=True, scope="session")
           def patch_odpclient_init(monkeypatch):
-              api_key = os.getenv("ODP_API_KEY", "dummy-fallback-key")
+              api_key = os.getenv("ODP_API_KEY")
               orig_init = OdpClient.__init__
       
               def patched_init(self, **data):
@@ -72,7 +72,7 @@ jobs:
       
       - name: Run Notebook Tests with nbval
         run: |
-          pytest -v --tb=short --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb -rA
+          pytest -vv --tb=long --nbval-lax --capture=no --log-cli-level=DEBUG dataset-examples/EMODnetHumanActivities_access_data.ipynb -r
 
 
       #- name: Run notebook tests with nbval-lax
