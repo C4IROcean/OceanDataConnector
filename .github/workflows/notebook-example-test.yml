@@ -20,15 +20,20 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     steps:
-      - name: Checkout OceanDataConnector repo
+
+      - name: Checkout only notebooks folder
         uses: actions/checkout@v3
         with:
-          repository: C4IROcean/OceanDataConnector
-          path: ocean-data-connector
+          sparse-checkout: true
+          sparse-checkout-paths: |
+            dataset-examples/
+
+      - name: List notebooks content
+        run: ls -R dataset-examples/
 
       - name: Copy dataset-examples to notebooks
         run: |
-          cp -r ocean-data-connector/dataset-examples ./dataset-examples
+          cp -r dataset-examples ./dataset-examples
           ls -R ./dataset-examples
           
       - name: Install other packages  # we should link this to the original source of package installing
@@ -50,4 +55,5 @@ jobs:
 
       - name: Run notebook tests with nbval-lax
         run: |
-          pytest --nbval-lax dataset-examples/*.ipynb
+          pytest --nbval-lax dataset-examples/*.ipynb --collect-only -v
+
