@@ -52,20 +52,20 @@ jobs:
       - name: Inject conftest.py for API key patch
         run: |
           cat << 'EOF' > dataset-examples/conftest.py
-          import odp_sdk
           import pytest
           import os
-
+          from odp.client import OdpClient
+      
           @pytest.fixture(autouse=True, scope="session")
           def patch_odpclient_init(monkeypatch):
               api_key = os.getenv("ODP_API_KEY", "dummy-fallback-key")
-              orig_init = odp_sdk.OdpClient.__init__
-
+              orig_init = OdpClient.__init__
+      
               def patched_init(self, **data):
                   data["api_key"] = api_key
                   orig_init(self, **data)
-
-              monkeypatch.setattr(odp_sdk.OdpClient, "__init__", patched_init)
+      
+              monkeypatch.setattr(OdpClient, "__init__", patched_init)
           EOF
 
       - name: Set environment secret
