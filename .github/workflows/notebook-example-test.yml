@@ -27,9 +27,9 @@ jobs:
           sparse-checkout: true
           sparse-checkout-paths: |
             dataset-examples/
-
+       
       - name: List notebooks content
-        run: ls -R ocean-data-connector/dataset-examples/
+        run: ls -R . #ls -R ocean-data-connector/dataset-examples/
 
       - name: Copy dataset-examples to notebooks
         run: |
