@@ -49,21 +49,31 @@ jobs:
         run: |
           pip install pytest nbval
 
-      - name: Inject Monkey Patch
+      - name: Inject conftest.py for API key patch
         run: |
-          cat << 'EOF' > ./dataset-examples/patch.py
+          cat << 'EOF' > dataset-examples/conftest.py
           import odp_sdk
-          orig_init = odp_sdk.OdpClient.__init__
-          def patched_init(self, **data):
-              if 'api_key' not in data or not data['api_key']:
-                  data['api_key'] = '${{ secrets.MY_ODP_API_KEY}}'
-              orig_init(self, **data)
-          odp_sdk.OdpClient.__init__ = patched_init
+          import pytest
+          import os
+
+          @pytest.fixture(autouse=True, scope="session")
+          def patch_odpclient_init(monkeypatch):
+              api_key = os.getenv("ODP_API_KEY", "dummy-fallback-key")
+              orig_init = odp_sdk.OdpClient.__init__
+
+              def patched_init(self, **data):
+                  data["api_key"] = api_key
+                  orig_init(self, **data)
+
+              monkeypatch.setattr(odp_sdk.OdpClient, "__init__", patched_init)
           EOF
+
+      - name: Set environment secret
+        run: echo "ODP_API_KEY=${{ secrets.MY_ODP_API_KEY }}" >> $GITHUB_ENV
       
       - name: Run Notebook Tests with nbval
         run: |
-          pytest --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb.ipynb --import-mode=append -p patch
+          pytest --nbval-lax dataset-examples/EMODnetHumanActivities_access_data.ipynb
 
 
       #- name: Run notebook tests with nbval-lax
