@@ -50,4 +50,4 @@ jobs:
 
       - name: Run notebook tests with nbval-lax
         run: |
-          pytest --nbval-lax dataset-examples/**/*.ipynb
+          pytest --nbval-lax dataset-examples/*.ipynb
