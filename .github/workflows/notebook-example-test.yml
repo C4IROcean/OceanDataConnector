@@ -104,7 +104,7 @@ jobs:
       
       - name: Run Notebook Tests with nbval
         run: |
-          pytest -vv --tb=short --nbval-lax --capture=no --log-cli-level=DEBUG dataset-examples/*.ipynb -rA
+          pytest -s -v --nbval-lax dataset-examples/*.ipynb
 
 
       #- name: Run notebook tests with nbval-lax
