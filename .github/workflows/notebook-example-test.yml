@@ -54,20 +54,52 @@ jobs:
       - name: Inject conftest.py for API key patch
         run: |
           cat << 'EOF' > dataset-examples/conftest.py
-          import pytest
+          # conftest.py
           import os
+          # Get the absolute path to the directory containing this conftest.py
+          # This makes the solution portable.
+          current_dir = os.path.dirname(os.path.abspath(__file__))
+          
+          # Set the PYTHONSTARTUP environment variable.
+          # When any new Python interpreter starts (including the nbval kernel),
+          # it will automatically execute the my_patcher.py file.
+          os.environ['PYTHONSTARTUP'] = os.path.join(current_dir, 'my_patcher.py')
+          
+          print(f"\n[conftest.py] Set PYTHONSTARTUP to: {os.environ['PYTHONSTARTUP']}", flush=True)
+          print("[conftest.py] Any new kernel should now load the patch automatically.", flush=True)
+          EOF
+
+      - name: Inject my_patcher.py for API key patch
+        run: |
+          cat << 'EOF' > dataset-examples/my_patcher.py
+          # my_patcher.py
+          import os
+          from unittest.mock import patch
+          
+          # This is the original class we want to patch.
           from odp.client import OdpClient
-      
-          @pytest.fixture(autouse=True, scope="session")
-          def patch_odpclient_init(monkeypatch):
-              api_key = os.getenv("ODP_API_KEY")
-              orig_init = OdpClient.__init__
-      
-              def patched_init(self, **data):
+          
+          print("[my_patcher.py] This patcher module has been imported.", flush=True)
+          
+          # --- The Patched Class ---
+          class PatchedOdpClient(OdpClient):
+              def __init__(self, **data):
+                  api_key = os.getenv("ODP_API_KEY")
+                  print("\n--------------------------", flush=True)
+                  print("--- ODP CLIENT PATCHED ---", flush=True)
+                  print(f"Injected API key: {api_key}", flush=True)
+                  print("--------------------------\n", flush=True)
+                  
                   data["api_key"] = api_key
-                  orig_init(self, **data)
-      
-              monkeypatch.setattr(OdpClient, "__init__", patched_init)
+                  super().__init__(**data)
+          
+          # --- The Patching Mechanism ---
+          # We create the patcher object.
+          patcher = patch('odp.client.OdpClient', PatchedOdpClient)
+          
+          # We start the patch IMMEDIATELY when this file is imported.
+          patcher.start()
+          print("[my_patcher.py] Global patch is now active.", flush=True)
           EOF
       
       - name: Run Notebook Tests with nbval
