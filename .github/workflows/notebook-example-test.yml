@@ -104,7 +104,7 @@ jobs:
       
       - name: Run Notebook Tests with nbval
         run: |
-          pytest -vv --tb=long --nbval-lax --capture=no --log-cli-level=DEBUG dataset-examples/EMODnetHumanActivities_access_data.ipynb -rA
+          pytest -vv --tb=short --nbval-lax --capture=no --log-cli-level=DEBUG dataset-examples/*.ipynb -rA
 
 
       #- name: Run notebook tests with nbval-lax
