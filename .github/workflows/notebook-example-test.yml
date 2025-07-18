@@ -107,8 +107,21 @@ jobs:
         run: |
           #pytest -s -v --nbval-lax dataset-examples/ProtectedSeas_data.ipynb
           pytest -s -v --nbval-lax dataset-examples/*.ipynb 
+       
+      - name: Create GitHub issue if notebook tests failed
+        if: failure()  # Only runs if previous step failed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_TITLE="Notebook tests failed in CI"
+          ISSUE_BODY="One or more notebooks failed nbval tests. Please check the workflow run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-
+          # Check if the issue already exists
+          if ! gh issue list --state open --search "$ISSUE_TITLE" | grep "$ISSUE_TITLE"; then
+            gh issue create --title "$ISSUE_TITLE" --body "$ISSUE_BODY" --label "bug,test-failure"
+          else
+            echo "Issue already exists, skipping creation"
+          fi
 
       #- name: Run notebook tests with nbval-lax
       #  run: |
