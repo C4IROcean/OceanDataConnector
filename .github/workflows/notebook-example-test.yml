@@ -28,9 +28,11 @@ jobs:
     steps:
 
       - name: Checkout OceanDataConnector repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: C4IROcean/OceanDataConnector
+          ref: main
+          fetch-depth: 1  # Ensures minimal clone but updated
           path: ocean-data-connector
 
       - name: Copy dataset-examples to notebooks
