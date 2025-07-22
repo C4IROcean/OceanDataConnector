@@ -1,4 +1,4 @@
-name: Notebook Examples Tests (JupyterHub Image)
+name: Notebook Examples Tests (JupyterHub Image odc-odp-workspace-python:2025.3.21)
 
 on:
   #schedule:
