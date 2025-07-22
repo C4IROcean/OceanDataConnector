@@ -1,0 +1,147 @@
+name: Notebook Examples Tests (JupyterHub Image odc-odp-workspace-python:2025.3.21)
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # every day at 6 AM
+  #pull_request:
+  #  branches:
+  #   - master
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  test-notebooks:
+    name: Run nbval tests inside JupyterHub Docker image
+    runs-on: ubuntu-latest
+
+    #note: we are not using the most recent image , hope it will be automatic in the future
+    container:
+      image: oceandata.azurecr.io/odc-odp-workspace-python:2025.3.21
+      options: --user root
+      credentials:
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+      env:
+        ODP_API_KEY: ${{ secrets.MY_ODP_API_KEY }}
+
+    steps:
+
+      - name: Checkout OceanDataConnector repo
+        uses: actions/checkout@v3
+        with:
+          repository: C4IROcean/OceanDataConnector
+
+          path: ocean-data-connector
+
+      - name: Copy dataset-examples to notebooks
+        run: |
+          cp -r ocean-data-connector/dataset-examples/ ./dataset-examples
+          ls -R ./dataset-examples
+          
+      - name: Install other packages  # we should link this to the original source of package installing
+        run: |
+          set -e
+          pip install -U odp-sdk --quiet || echo "Failed to install odp-sdk"
+          pip install -U h3==3.7.7 --quiet || echo "Failed to install h3"
+          pip install -U pydeck==0.9.1 --quiet || echo "Failed to install pydeck"
+      
+          if grep -q "JUPYTERGIS" /hubocean-image-type.txt; then
+            echo "Jupyter GIS image detected, skipping package installation"
+          else
+            pip install -U jupyter_collaboration==4.0.2 --quiet || echo "Failed to install jupyter_collaboration"
+          fi
+
+      - name: Install nbval (if not already in image)
+        run: |
+          pip install pytest nbval
+
+      - name: Inject conftest.py for API key patch
+        run: |
+          cat << 'EOF' > dataset-examples/conftest.py
+          # conftest.py
+          import os
+          # Get the absolute path to the directory containing this conftest.py
+          # This makes the solution portable.
+          current_dir = os.path.dirname(os.path.abspath(__file__))
+          
+          # Set the PYTHONSTARTUP environment variable.
+          # When any new Python interpreter starts (including the nbval kernel),
+          # it will automatically execute the my_patcher.py file.
+          os.environ['PYTHONSTARTUP'] = os.path.join(current_dir, 'my_patcher.py')
+          
+          print(f"\n[conftest.py] Set PYTHONSTARTUP to: {os.environ['PYTHONSTARTUP']}", flush=True)
+          print("[conftest.py] Any new kernel should now load the patch automatically.", flush=True)
+          EOF
+
+      - name: Inject my_patcher.py for API key patch
+        run: |
+          cat << 'EOF' > dataset-examples/my_patcher.py
+          # my_patcher.py
+          import os
+          from unittest.mock import patch
+          
+          # This is the original class we want to patch.
+          from odp.client import OdpClient
+          
+          print("[my_patcher.py] This patcher module has been imported.", flush=True)
+          
+          # --- The Patched Class ---
+          class PatchedOdpClient(OdpClient):
+              def __init__(self, **data):
+                  api_key = os.getenv("ODP_API_KEY")
+                  print("\n--------------------------", flush=True)
+                  print("--- ODP CLIENT PATCHED ---", flush=True)
+                  print(f"Injected API key: {api_key}", flush=True)
+                  print("--------------------------\n", flush=True)
+                  
+                  data["api_key"] = api_key
+                  super().__init__(**data)
+          
+          # --- The Patching Mechanism ---
+          # We create the patcher object.
+          patcher = patch('odp.client.OdpClient', PatchedOdpClient)
+          
+          # We start the patch IMMEDIATELY when this file is imported.
+          patcher.start()
+          print("[my_patcher.py] Global patch is now active.", flush=True)
+          EOF
+      
+      - name: Run Notebook Tests with nbval
+        run: |
+          #pytest -s -v --nbval-lax dataset-examples/ProtectedSeas_data.ipynb
+          pytest -s -v --nbval-lax dataset-examples/*.ipynb 
+       
+      - name: Create GitHub issue if notebook tests failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = "Notebook tests failed in CI";
+            const body = `One or more notebooks failed nbval tests.
+            Check run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            // Check if an issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open"
+            });
+            
+            if (!issues.data.find(issue => issue.title === title)) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ["bug", "test-failure"]
+              });
+            } else {
+              core.info("Issue already exists, skipping creation");
+            }
+
+      #- name: Run notebook tests with nbval-lax
+      #  run: |
+      #    pytest --nbval-lax ./dataset-examples/*.ipynb 
+
