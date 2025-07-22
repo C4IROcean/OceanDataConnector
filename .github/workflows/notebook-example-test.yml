@@ -1,11 +1,11 @@
 name: Notebook Examples Tests (JupyterHub Image)
 
 on:
-  schedule:
-    - cron: "0 6 * * *"  # every day at 6 AM
-  #pull_request:
-  #  branches:
-  #   - master
+  #schedule:
+  #  - cron: "0 6 * * *"  # every day at 6 AM
+  pull_request:
+    branches:
+     - master
 permissions:
   contents: read
   issues: write
