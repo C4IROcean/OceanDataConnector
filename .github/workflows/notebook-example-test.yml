@@ -132,3 +132,9 @@ jobs:
       #  run: |
       #    pytest --nbval-lax ./dataset-examples/*.ipynb 
 
+      - name: Send failure message to Slack
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ GitHub Actions notebook-example-test Failed in repo *'"${GITHUB_REPOSITORY}"'*. Check details: '"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"'"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
