@@ -11,13 +11,39 @@ permissions:
   issues: write
 
 jobs:
+  fetch-variable:
+    runs-on: ubuntu-latest
+    outputs:
+      notebookImage: ${{ steps.extract.outputs.notebookImage }}
+      notebookImageTag: ${{ steps.extract.outputs.notebookImageTag }}
+    steps:
+      # Checkout the other repo (repo-1)
+      - name: Checkout infrastructure
+        uses: actions/checkout@v4
+        with:
+          repository: C4IROcean/infrastructure   # Replace with actual org/repo
+          ref: main                     # Or specify a branch/tag
+          path: infrastructure
+          token: ${{ secrets.GITHUB_TOKEN }} # Or PAT if cross-org
+
+      # Extract notebookImageTag from file
+      - name: Extract notebookImageTag value
+        id: extract
+        run: |
+          image=$(grep 'notebookImage' infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          tag=$(grep 'notebookImageTag' infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          echo "notebookImage=$image" >> $GITHUB_OUTPUT
+          echo "notebookImageTag=$tag" >> $GITHUB_OUTPUT
+                  
+     
   test-notebooks:
     name: Run nbval tests inside JupyterHub Docker image
+    needs: fetch-variable
     runs-on: ubuntu-latest
 
     #note: we are not using the most recent image , hope it will be automatic in the future
     container:
-      image: oceandata.azurecr.io/odc-odp-workspace:2025.7.11
+      image: oceandata.azurecr.io/${{ needs.fetch-tag.outputs.notebookImage}}:${{ needs.fetch-tag.outputs.notebookImageTag }}
       options: --user root
       credentials:
         username: ${{ secrets.ACR_USERNAME }}
