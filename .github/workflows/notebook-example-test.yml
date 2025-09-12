@@ -17,14 +17,12 @@ jobs:
       notebookImage: ${{ steps.extract.outputs.notebookImage }}
       notebookImageTag: ${{ steps.extract.outputs.notebookImageTag }}
     steps:
-      # Checkout the other repo (repo-1)
-      - name: Checkout infrastructure
+      - name: Checkout private repo
         uses: actions/checkout@v4
         with:
-          repository: C4IROcean/infrastructure   # Replace with actual org/repo
-          ref: main                     # Or specify a branch/tag
+          repository: C4IROcean/infrastructure
           path: infrastructure
-          token: ${{ secrets.GITHUB_TOKEN }} # Or PAT if cross-org
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # Extract notebookImageTag from file
       - name: Extract notebookImageTag value
