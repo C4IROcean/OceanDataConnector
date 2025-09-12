@@ -33,8 +33,8 @@ jobs:
       - name: Extract notebookImageTag value
         id: extract
         run: |
-          image=$(grep 'notebookImage' infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
-          tag=$(grep 'notebookImageTag' infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          image=$(grep 'notebookImage' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          tag=$(grep 'notebookImageTag' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
           echo "notebookImage=$image" >> $GITHUB_OUTPUT
           echo "notebookImageTag=$tag" >> $GITHUB_OUTPUT
                   
