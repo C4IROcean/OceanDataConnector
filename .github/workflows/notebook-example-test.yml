@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 jobs:
-  fetch-variable:
+  fetch-image-variable:
     runs-on: ubuntu-latest
     outputs:
       notebookImage: ${{ steps.extract.outputs.notebookImage }}
@@ -36,12 +36,12 @@ jobs:
      
   test-notebooks:
     name: Run nbval tests inside JupyterHub Docker image
-    needs: fetch-variable
+    needs: fetch-image-variable
     runs-on: ubuntu-latest
 
     #note: we are not using the most recent image , hope it will be automatic in the future
     container:
-      image: oceandata.azurecr.io/${{ needs.fetch-tag.outputs.notebookImage}}:${{ needs.fetch-tag.outputs.notebookImageTag }}
+      image: oceandata.azurecr.io/${{ needs.fetch-image-variable.outputs.notebookImage}}:${{ needs.fetch-image-variable.outputs.notebookImageTag }}
       #image: oceandata.azurecr.io/odc-odp-workspace:2025.8.28
       options: --user root
       credentials:
