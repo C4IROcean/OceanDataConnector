@@ -33,20 +33,26 @@ jobs:
       - name: Extract notebookImageTag value
         id: extract
         run: |
-          # Use grep and cut as before, but add | tr -d '\r' at the end to delete carriage returns.
-          image=$(grep 'notebookImage' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2 | tr -d '\r')
-          tag=$(grep 'notebookImageTag' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2 | tr -d '\r')
+          # Use a more specific grep pattern to ensure only one line is matched.
+          # The '^' matches the start of the line, and we include the whitespace.
+          # This ensures we match '  notebookImage = ...' but not '  notebookImageTag = ...'
+          image=$(grep '^[[:space:]]*notebookImage[[:space:]]*=' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          
+          # The grep for the tag is already specific enough, but we'll make it robust too.
+          tag=$(grep '^[[:space:]]*notebookImageTag[[:space:]]*=' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          
+          # No need for tr -d '\r' if the source of the problem is the multi-line grep.
           
           # Debugging: Print the values to the log to be sure they are correct
           echo "Image found: $image"
           echo "Tag found: $tag"
           
-          # Set the output using the modern, recommended syntax
-          # This part of your script is correct, the problem was the value of the variables.
+          # Set the output. This part has always been correct.
           echo "notebookImage=$image" >> "$GITHUB_OUTPUT"
           echo "notebookImageTag=$tag" >> "$GITHUB_OUTPUT"
           
-          echo "Outputs have been set."                  
+          echo "Outputs have been set."
+                  
      
   test-notebooks:
     name: Run nbval tests inside JupyterHub Docker image
