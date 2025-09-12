@@ -33,18 +33,20 @@ jobs:
       - name: Extract notebookImageTag value
         id: extract
         run: |
-          image=$(grep 'notebookImage' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
-          tag=$(grep 'notebookImageTag' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          # Use grep and cut as before, but add | tr -d '\r' at the end to delete carriage returns.
+          image=$(grep 'notebookImage' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2 | tr -d '\r')
+          tag=$(grep 'notebookImageTag' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2 | tr -d '\r')
+          
           # Debugging: Print the values to the log to be sure they are correct
           echo "Image found: $image"
           echo "Tag found: $tag"
           
           # Set the output using the modern, recommended syntax
+          # This part of your script is correct, the problem was the value of the variables.
           echo "notebookImage=$image" >> "$GITHUB_OUTPUT"
           echo "notebookImageTag=$tag" >> "$GITHUB_OUTPUT"
           
-          echo "Outputs have been set."
-                  
+          echo "Outputs have been set."                  
      
   test-notebooks:
     name: Run nbval tests inside JupyterHub Docker image
