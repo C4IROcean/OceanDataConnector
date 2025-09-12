@@ -1,8 +1,8 @@
 name: Notebook Examples Tests (JupyterHub Image odc-odp-workspace-python:2025.3.21)
 
 on:
-  #schedule:
-  #  - cron: "0 6 * * *"  # every day at 6 AM
+  schedule:
+    - cron: "0 6 * * *"  # every day at 6 AM
   pull_request:
     branches:
      - master
