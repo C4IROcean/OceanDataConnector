@@ -61,7 +61,7 @@ jobs:
 
     #note: we are not using the most recent image , hope it will be automatic in the future
     container:
-      image: oceandata.azurecr.io/${{ needs.fetch-image-variable.outputs.notebookImage}}:${{ needs.fetch-image-variable.outputs.notebookImageTag }}
+      image: ${{ needs.fetch-image-variable.outputs.notebookImage}}:${{ needs.fetch-image-variable.outputs.notebookImageTag }}
       #image: oceandata.azurecr.io/odc-odp-workspace:2025.8.28
       options: --user root
       credentials:
