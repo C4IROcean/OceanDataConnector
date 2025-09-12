@@ -11,13 +11,58 @@ permissions:
   issues: write
 
 jobs:
+  fetch-image-variable:
+    runs-on: ubuntu-latest
+    outputs:
+      notebookImage: ${{ steps.extract.outputs.notebookImage }}
+      notebookImageTag: ${{ steps.extract.outputs.notebookImageTag }}
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          repository: C4IROcean/infrastructure
+          path: infrastructure
+          ref: master   # <-- match the branch where workspaces.tf exists
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Verify checkout
+        run: |
+          echo "Current dir: $(pwd)"
+          ls -R infrastructure || echo "No infrastructure dir"
+    
+      # Extract notebookImageTag from file
+      - name: Extract notebookImageTag value
+        id: extract
+        run: |
+          # Use a more specific grep pattern to ensure only one line is matched.
+          # The '^' matches the start of the line, and we include the whitespace.
+          # This ensures we match '  notebookImage = ...' but not '  notebookImageTag = ...'
+          image=$(grep '^[[:space:]]*notebookImage[[:space:]]*=' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          
+          # The grep for the tag is already specific enough, but we'll make it robust too.
+          tag=$(grep '^[[:space:]]*notebookImageTag[[:space:]]*=' infrastructure/infrastructure/20-PLATFORM/workspaces.tf | cut -d'"' -f2)
+          
+          # No need for tr -d '\r' if the source of the problem is the multi-line grep.
+          
+          # Debugging: Print the values to the log to be sure they are correct
+          echo "Image found: $image"
+          echo "Tag found: $tag"
+          
+          # Set the output. This part has always been correct.
+          echo "notebookImage=$image" >> "$GITHUB_OUTPUT"
+          echo "notebookImageTag=$tag" >> "$GITHUB_OUTPUT"
+          
+          echo "Outputs have been set."
+                  
+     
   test-notebooks:
     name: Run nbval tests inside JupyterHub Docker image
+    needs: fetch-image-variable
     runs-on: ubuntu-latest
 
     #note: we are not using the most recent image , hope it will be automatic in the future
     container:
-      image: oceandata.azurecr.io/odc-odp-workspace:2025.8.28
+      image: ${{ needs.fetch-image-variable.outputs.notebookImage}}:${{ needs.fetch-image-variable.outputs.notebookImageTag }}
+      #image: oceandata.azurecr.io/odc-odp-workspace:2025.8.28
       options: --user root
       credentials:
         username: ${{ secrets.ACR_USERNAME }}
