@@ -22,6 +22,7 @@ jobs:
         with:
           repository: C4IROcean/infrastructure
           path: infrastructure
+          ref: master   # <-- match the branch where workspaces.tf exists
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # Extract notebookImageTag from file
