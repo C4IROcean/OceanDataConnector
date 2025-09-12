@@ -24,7 +24,11 @@ jobs:
           path: infrastructure
           ref: master   # <-- match the branch where workspaces.tf exists
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
+      - name: Verify checkout
+        run: |
+          echo "Current dir: $(pwd)"
+          ls -R infrastructure || echo "No infrastructure dir"
+    
       # Extract notebookImageTag from file
       - name: Extract notebookImageTag value
         id: extract
