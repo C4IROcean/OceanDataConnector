@@ -113,30 +113,49 @@ jobs:
           import os
           from unittest.mock import patch
           
-          # This is the original class we want to patch.
-          from odp.client import OdpClient
-          
           print("[my_patcher.py] This patcher module has been imported.", flush=True)
           
-          # --- The Patched Class ---
-          class PatchedOdpClient(OdpClient):
-              def __init__(self, **data):
-                  api_key = os.getenv("ODP_API_KEY")
-                  print("\n--------------------------", flush=True)
-                  print("--- ODP CLIENT PATCHED ---", flush=True)
-                  print(f"Injected API key: {api_key}", flush=True)
-                  print("--------------------------\n", flush=True)
-                  
-                  data["api_key"] = api_key
-                  super().__init__(**data)
+          # Try to patch both old and new client classes
+          try:
+              from odp.client import OdpClient
+              
+              class PatchedOdpClient(OdpClient):
+                  def __init__(self, **data):
+                      api_key = os.getenv("ODP_API_KEY")
+                      if api_key and "api_key" not in data:
+                          print("\n--------------------------", flush=True)
+                          print("--- ODP CLIENT PATCHED ---", flush=True)
+                          print(f"Injected API key from env", flush=True)
+                          print("--------------------------\n", flush=True)
+                          data["api_key"] = api_key
+                      super().__init__(**data)
+              
+              patcher1 = patch('odp.client.OdpClient', PatchedOdpClient)
+              patcher1.start()
+              print("[my_patcher.py] OdpClient patch is now active.", flush=True)
+          except ImportError:
+              print("[my_patcher.py] OdpClient not found, skipping.", flush=True)
           
-          # --- The Patching Mechanism ---
-          # We create the patcher object.
-          patcher = patch('odp.client.OdpClient', PatchedOdpClient)
-          
-          # We start the patch IMMEDIATELY when this file is imported.
-          patcher.start()
-          print("[my_patcher.py] Global patch is now active.", flush=True)
+          # Also try to patch the new Client class
+          try:
+              from odp.client import Client
+              
+              class PatchedClient(Client):
+                  def __init__(self, **data):
+                      api_key = os.getenv("ODP_API_KEY")
+                      if api_key and "api_key" not in data:
+                          print("\n--------------------------", flush=True)
+                          print("--- CLIENT PATCHED ---", flush=True)
+                          print(f"Injected API key from env", flush=True)
+                          print("--------------------------\n", flush=True)
+                          data["api_key"] = api_key
+                      super().__init__(**data)
+              
+              patcher2 = patch('odp.client.Client', PatchedClient)
+              patcher2.start()
+              print("[my_patcher.py] Client patch is now active.", flush=True)
+          except (ImportError, AttributeError):
+              print("[my_patcher.py] Client not found, skipping.", flush=True)
           EOF
       
       - name: Run Notebook Tests with nbval
